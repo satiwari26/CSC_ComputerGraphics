@@ -1,0 +1,1 @@
+/usr/bin/c++  -std=c++0x -Wall -pedantic -rdynamic CMakeFiles/Lab01.dir/src/Image.cpp.o CMakeFiles/Lab01.dir/src/main.cpp.o -o Lab01 
