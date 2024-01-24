@@ -1,0 +1,1 @@
+/usr/bin/c++  -std=c++0x -Wall -pedantic -rdynamic CMakeFiles/raster.dir/src/Image.cpp.o CMakeFiles/raster.dir/src/main.cpp.o CMakeFiles/raster.dir/src/tiny_obj_loader.cpp.o -o raster 

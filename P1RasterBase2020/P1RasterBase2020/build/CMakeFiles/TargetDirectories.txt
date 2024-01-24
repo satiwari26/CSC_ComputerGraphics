@@ -1,0 +1,3 @@
+/home/chero/compGraphics/P1RasterBase2020/P1RasterBase2020/build/CMakeFiles/raster.dir
+/home/chero/compGraphics/P1RasterBase2020/P1RasterBase2020/build/CMakeFiles/edit_cache.dir
+/home/chero/compGraphics/P1RasterBase2020/P1RasterBase2020/build/CMakeFiles/rebuild_cache.dir
