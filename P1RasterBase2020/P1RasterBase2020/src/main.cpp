@@ -123,11 +123,21 @@ int worldToPixelY(float &py, screenView &view){
    return(E*py + F);
 }
 
+bool checkNormal(int v1x, int v1y, int v2x, int v2y, int v3x, int v3y){
+   int val = ((v1x - v3x)*(v2y-v3y) - (v2x - v3x)*(v1y - v3y));
+   if(val < 0){
+      return false;
+   }
+   else{
+      return true;
+   }
+}
+
 
 int main(int argc, char **argv)
 {
-	if(argc < 3) {
-      cout << "Usage: raster meshfile imagefile" << endl;
+	if(argc < 6) {
+      cout << "Usage: raster meshfile imagefile width height Coloring mode" << endl;
       return 0;
    }
 	// OBJ filename
@@ -135,8 +145,10 @@ int main(int argc, char **argv)
 	string imgName(argv[2]);
 
 	//set g_width and g_height appropriately!
-	g_width = 1024;
-   g_height = 600;
+	g_width = atoi(argv[3]);
+   g_height = atoi(argv[4]);
+
+   int coloringMode = atoi(argv[5]);
 
    //create an image
 	auto image = make_shared<Image>(g_width, g_height);
@@ -178,20 +190,6 @@ int main(int argc, char **argv)
 	}
 	cout << "Number of vertices: " << posBuf.size()/3 << endl;
 	cout << "Number of triangles: " << triBuf.size()/3 << endl;
-
-   //vertex colors
-	vertexColor v1,v2,v3;
-	v1.b = 173;
-	v1.g = 216;
-	v1.r = 230;
-
-	v2.b = 173;
-	v2.g = 216;
-	v2.r = 230;
-
-	v3.b = 173;
-	v3.g = 216;
-	v3.r = 230;
 
    vector<vector<float>> Zbuff(g_height,vector<float>(g_width,-numeric_limits<float>::infinity()));
 
@@ -254,14 +252,28 @@ int main(int argc, char **argv)
                float beta = float((V1x-V3x)*(y-V3y) - (x-V3x)*(V1y-V3y))/float((V2x-V1x)*(V3y-V1y) - (V3x-V1x)*(V2y - V1y));
                float alpha = (1.0 - beta - gamma);
 
-               if(alpha >= 0.15 && alpha <= 1.001 && gamma >= 0.15 && gamma <= 1.001 && beta >= 0.15 && beta < 1.001 ) {
-
+               if(alpha >= -0.001 && alpha <= 1.001 && gamma >= -0.001 && gamma <= 1.001 && beta >= -0.001 && beta < 1.001 ) {
                   float currentZ = alpha*float(V1z) + beta*float(V2z) + gamma*float(V3z);
+                  if(coloringMode == 1){
 
-                  if(Zbuff[y][x] < currentZ){
-                     unsigned char r = 255*((currentZ + 1)/2);
-                     image->setPixel(x , y, 0.75*r, 0, 0);
-                     Zbuff[y][x] = currentZ;
+                     if(Zbuff[y][x] < currentZ){
+                        unsigned char r = 255*((currentZ + 1)/2);
+                        image->setPixel(x , y, 0.75*r, 0, 0);
+                        Zbuff[y][x] = currentZ;
+                     }
+                  }
+                  else if(coloringMode == 2){
+                     if(alpha >= 0.15 && alpha <= 1.001 && gamma >= 0.15 && gamma <= 1.001 && beta >= 0.15 && beta < 1.001 ) {
+                        if(Zbuff[y][x] < currentZ){
+                           bool val = checkNormal(V1x,V1y,V2x,V2y,V3x,V3y);
+                           unsigned char r = 255;
+                           if(val == false){
+                              r = 0;
+                           }
+                           image->setPixel(x , y, 0, 0, r);
+                           Zbuff[y][x] = currentZ;
+                        }
+                     }
                   }
                }
             }
