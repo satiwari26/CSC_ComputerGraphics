@@ -123,8 +123,9 @@ int worldToPixelY(float &py, screenView &view){
    return(E*py + F);
 }
 
-bool checkNormal(int v1x, int v1y, int v2x, int v2y, int v3x, int v3y){
-   int val = ((v1x - v3x)*(v2y-v3y) - (v2x - v3x)*(v1y - v3y));
+bool checkNormal(int v1x, int v1y, int v2x, int v2y, int x, int y){
+//    int val = ((v1x - v3x)*(v2y-v3y) - (v2x - v3x)*(v1y - v3y));
+    int val = ((v2x-v1x)*(y-v1y) - (x-v1x)*(v2y-v1y));
    if(val < 0){
       return false;
    }
@@ -264,16 +265,25 @@ int main(int argc, char **argv)
                   }
                   else if(coloringMode == 2){
                      if(alpha >= 0.15 && alpha <= 1.001 && gamma >= 0.15 && gamma <= 1.001 && beta >= 0.15 && beta < 1.001 ) {
+                        
                         if(Zbuff[y][x] < currentZ){
-                           bool val = checkNormal(V1x,V1y,V2x,V2y,V3x,V3y);
-                           unsigned char r = 255;
+                           bool val = checkNormal(V1x,V1y,V2x,V2y,x,y);
+                           unsigned char r = 255*((currentZ + 1)/2);
+                           unsigned char g = 120;
                            if(val == false){
                               r = 0;
+                              g = 0;
                            }
-                           image->setPixel(x , y, 0, 0, r);
+                           image->setPixel(x , y, r, g, 0);
                            Zbuff[y][x] = currentZ;
                         }
-                     }
+                    }
+                    else{
+                        if(Zbuff[y][x] < currentZ){
+                           image->setPixel(x , y, 0,0,0);
+                           Zbuff[y][x] = currentZ;
+                        }
+                    }
                   }
                }
             }
