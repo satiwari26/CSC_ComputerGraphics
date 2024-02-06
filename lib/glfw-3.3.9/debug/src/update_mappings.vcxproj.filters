@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\tiwar\Desktop\compGraphics\OGLBaseLab4-24\build\CMakeFiles\d825d18d8128db3baa69a5ede022aa3d\update_mappings.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\tiwar\Desktop\compGraphics\lib\glfw-3.3.9\src\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="C:\Users\tiwar\Desktop\compGraphics\lib\glfw-3.3.9\src\mappings.h.in">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="C:\Users\tiwar\Desktop\compGraphics\lib\glfw-3.3.9\CMake\GenerateMappings.cmake" />
+    <None Include="C:\Users\tiwar\Desktop\compGraphics\lib\glfw-3.3.9\debug\src\CMakeFiles\update_mappings" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{E9851956-6834-37AF-9BD6-EE96F52005BA}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{D1338F9F-B795-3575-B45A-C3CB4EF4BD3E}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

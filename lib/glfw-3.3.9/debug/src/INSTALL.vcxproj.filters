@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\tiwar\Desktop\compGraphics\OGLBaseLab4-24\build\CMakeFiles\d825d18d8128db3baa69a5ede022aa3d\INSTALL_force.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{E9851956-6834-37AF-9BD6-EE96F52005BA}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
