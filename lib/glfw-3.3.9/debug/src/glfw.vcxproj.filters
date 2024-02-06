@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\tiwar\Desktop\compGraphics\lib\glfw-3.3.9\src\context.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tiwar\Desktop\compGraphics\lib\glfw-3.3.9\src\init.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tiwar\Desktop\compGraphics\lib\glfw-3.3.9\src\input.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tiwar\Desktop\compGraphics\lib\glfw-3.3.9\src\monitor.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tiwar\Desktop\compGraphics\lib\glfw-3.3.9\src\vulkan.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tiwar\Desktop\compGraphics\lib\glfw-3.3.9\src\window.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tiwar\Desktop\compGraphics\lib\glfw-3.3.9\src\win32_init.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tiwar\Desktop\compGraphics\lib\glfw-3.3.9\src\win32_joystick.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tiwar\Desktop\compGraphics\lib\glfw-3.3.9\src\win32_monitor.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tiwar\Desktop\compGraphics\lib\glfw-3.3.9\src\win32_time.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tiwar\Desktop\compGraphics\lib\glfw-3.3.9\src\win32_thread.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tiwar\Desktop\compGraphics\lib\glfw-3.3.9\src\win32_window.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tiwar\Desktop\compGraphics\lib\glfw-3.3.9\src\wgl_context.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tiwar\Desktop\compGraphics\lib\glfw-3.3.9\src\egl_context.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tiwar\Desktop\compGraphics\lib\glfw-3.3.9\src\osmesa_context.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="C:\Users\tiwar\Desktop\compGraphics\lib\glfw-3.3.9\src\internal.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\tiwar\Desktop\compGraphics\lib\glfw-3.3.9\src\mappings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\tiwar\Desktop\compGraphics\lib\glfw-3.3.9\debug\src\glfw_config.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\tiwar\Desktop\compGraphics\lib\glfw-3.3.9\include\GLFW\glfw3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\tiwar\Desktop\compGraphics\lib\glfw-3.3.9\include\GLFW\glfw3native.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\tiwar\Desktop\compGraphics\lib\glfw-3.3.9\src\win32_platform.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\tiwar\Desktop\compGraphics\lib\glfw-3.3.9\src\win32_joystick.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\tiwar\Desktop\compGraphics\lib\glfw-3.3.9\src\wgl_context.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\tiwar\Desktop\compGraphics\lib\glfw-3.3.9\src\egl_context.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\tiwar\Desktop\compGraphics\lib\glfw-3.3.9\src\osmesa_context.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\tiwar\Desktop\compGraphics\lib\glfw-3.3.9\src\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{D1338F9F-B795-3575-B45A-C3CB4EF4BD3E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{0B4F913F-9A80-389C-8360-BD741A0396AD}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
