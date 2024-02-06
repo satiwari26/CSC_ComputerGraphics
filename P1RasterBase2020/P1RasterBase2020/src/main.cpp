@@ -264,7 +264,7 @@ int main(int argc, char **argv)
                      }
                   }
                   else if(coloringMode == 2){
-                     if(alpha >= 0.15 && alpha <= 1.001 && gamma >= 0.15 && gamma <= 1.001 && beta >= 0.15 && beta < 1.001 ) {
+                    if(alpha >= 0.15 && alpha <= 1.001 && gamma >= 0.15 && gamma <= 1.001 && beta >= 0.15 && beta < 1.001 ) {
                         
                         if(Zbuff[y][x] < currentZ){
                            bool val = checkNormal(V1x,V1y,V2x,V2y,x,y);
@@ -284,7 +284,7 @@ int main(int argc, char **argv)
                            Zbuff[y][x] = currentZ;
                         }
                     }
-                  }
+                }
                }
             }
          }
