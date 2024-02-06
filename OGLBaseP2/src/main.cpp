@@ -42,12 +42,41 @@ public:
 	//a different mesh
 	shared_ptr<Shape> bunny;
 
+	//tree base
+	shared_ptr<Shape> tree;
+	vector<shared_ptr<Shape>> trees;
+
+	//car base
+	shared_ptr<Shape> car;
+	vector<shared_ptr<Shape>> cars;
+
+	//building
+	shared_ptr<Shape> building;
+	vector<shared_ptr<Shape>> buildings;
+
+	//batman
+	shared_ptr<Shape> batman;
+	vector<shared_ptr<Shape>> batmans;
+
+	//grass
+	shared_ptr<Shape> grass;
+	vector<shared_ptr<Shape>> grasses;
+
+	//Mountain
+	shared_ptr<Shape> mountain;
+	vector<shared_ptr<Shape>> mountains;
+
+	//city
+	shared_ptr<Shape> city;
+	vector<shared_ptr<Shape>> cities;
+
 	//example data that might be useful when trying to compute bounds on multi-shape
 	vec3 gMin;
 
 	//animation data
 	float sTheta = 0;
-	float gTrans = 0;
+	float gTrans = -6;
+	float gTrans2 = 0;
 
 	void keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods)
 	{
@@ -56,10 +85,23 @@ public:
 			glfwSetWindowShouldClose(window, GL_TRUE);
 		}
 		if (key == GLFW_KEY_A && action == GLFW_PRESS) {
-			gTrans -= 0.2;
+			gTrans += 0.2;
+			// sTheta += 0.2;
 		}
 		if (key == GLFW_KEY_D && action == GLFW_PRESS) {
-			gTrans += 0.2;
+			gTrans -= 0.2;
+			// sTheta -= 0.2;
+		}
+		if (key == GLFW_KEY_W && action == GLFW_PRESS) {
+			gTrans2 -= 0.2;
+			// sTheta += 0.2;
+		}
+		if (key == GLFW_KEY_S && action == GLFW_PRESS) {
+			gTrans2 += 0.2;
+			// sTheta -= 0.2;
+		}
+		if (key == GLFW_KEY_R && action == GLFW_PRESS) {
+			sTheta -= 0.2;
 		}
 		if (key == GLFW_KEY_Z && action == GLFW_PRESS) {
 			glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
@@ -155,6 +197,108 @@ public:
 			bunny->init();
 		}
 
+		//trees
+		vector<tinyobj::shape_t> TOshapes3;
+ 		rc = tinyobj::LoadObj(TOshapes3, objMaterials, errStr, (resourceDirectory + "/tree.obj").c_str());
+		
+		for(int i=0;i<TOshapes3.size();i++){
+			if (!rc) {
+				cerr << errStr << endl;
+			} else {
+				//for now all our shapes will not have textures - change in later labs
+				tree = make_shared<Shape>(false);
+				tree->createShape(TOshapes3[i]);
+				tree->measure();
+				tree->init();
+				trees.push_back(tree);
+			}
+		}
+
+		//building
+		vector<tinyobj::shape_t> TOshapes5;
+ 		rc = tinyobj::LoadObj(TOshapes5, objMaterials, errStr, (resourceDirectory + "/building.obj").c_str());
+		
+		for(int i=0;i<TOshapes5.size();i++){
+			if (!rc) {
+				cerr << errStr << endl;
+			} else {
+				//for now all our shapes will not have textures - change in later labs
+				building = make_shared<Shape>(false);
+				building->createShape(TOshapes5[i]);
+				building->measure();
+				building->init();
+				buildings.push_back(building);
+			}
+		}
+
+		//batman
+		vector<tinyobj::shape_t> TOshapes6;
+ 		rc = tinyobj::LoadObj(TOshapes6, objMaterials, errStr, (resourceDirectory + "/batman.obj").c_str());
+		
+		for(int i=0;i<TOshapes6.size();i++){
+			if (!rc) {
+				cerr << errStr << endl;
+			} else {
+				//for now all our shapes will not have textures - change in later labs
+				batman = make_shared<Shape>(false);
+				batman->createShape(TOshapes6[i]);
+				batman->measure();
+				batman->init();
+				batmans.push_back(batman);
+			}
+		}
+
+		//car
+		vector<tinyobj::shape_t> TOshapes7;
+ 		rc = tinyobj::LoadObj(TOshapes7, objMaterials, errStr, (resourceDirectory + "/car.obj").c_str());
+
+		for(int i=0;i<TOshapes7.size();i++){
+			if (!rc) {
+				cerr << errStr << endl;
+			} else {
+				//for now all our shapes will not have textures - change in later labs
+				car = make_shared<Shape>(false);
+				car->createShape(TOshapes7[i]);
+				car->measure();
+				car->init();
+				cars.push_back(car);
+			}
+		}
+
+		//mountain
+		vector<tinyobj::shape_t> TOshapes8;
+ 		rc = tinyobj::LoadObj(TOshapes8, objMaterials, errStr, (resourceDirectory + "/mountain.obj").c_str());
+
+		for(int i=0;i<TOshapes8.size();i++){
+			if (!rc) {
+				cerr << errStr << endl;
+			} else {
+				//for now all our shapes will not have textures - change in later labs
+				mountain = make_shared<Shape>(false);
+				mountain->createShape(TOshapes8[i]);
+				mountain->measure();
+				mountain->init();
+				mountains.push_back(mountain);
+			}
+		}
+
+		//city
+		vector<tinyobj::shape_t> TOshapes9;
+ 		rc = tinyobj::LoadObj(TOshapes9, objMaterials, errStr, (resourceDirectory + "/city.obj").c_str());
+
+		for(int i=0;i<TOshapes9.size();i++){
+			if (!rc) {
+				cerr << errStr << endl;
+			} else {
+				//for now all our shapes will not have textures - change in later labs
+				city = make_shared<Shape>(false);
+				city->createShape(TOshapes9[i]);
+				city->measure();
+				city->init();
+				cities.push_back(city);
+			}
+		}
+
 		//read out information stored in the shape about its size - something like this...
 		//then do something with that information.....
 		gMin.x = mesh->min.x;
@@ -200,21 +344,22 @@ public:
 		// View is global translation along negative z for now
 		View->pushMatrix();
 			View->loadIdentity();
-			View->translate(vec3(0, 0, -5));
+			View->rotate(sTheta, vec3(0, -0.5, 0));
+			View->translate(vec3(gTrans, gTrans2, -20));
 
 		// Draw a solid colored sphere
-		solidColorProg->bind();
-		//send the projetion and view for solid shader
-		glUniformMatrix4fv(solidColorProg->getUniform("P"), 1, GL_FALSE, value_ptr(Projection->topMatrix()));
-		glUniformMatrix4fv(solidColorProg->getUniform("V"), 1, GL_FALSE, value_ptr(View->topMatrix()));
-		//send in the color to use
-		glUniform3f(solidColorProg->getUniform("solidColor"), 0.1, 0.2, 0.5);
+		// solidColorProg->bind();
+		// //send the projetion and view for solid shader
+		// glUniformMatrix4fv(solidColorProg->getUniform("P"), 1, GL_FALSE, value_ptr(Projection->topMatrix()));
+		// glUniformMatrix4fv(solidColorProg->getUniform("V"), 1, GL_FALSE, value_ptr(View->topMatrix()));
+		// //send in the color to use
+		// glUniform3f(solidColorProg->getUniform("solidColor"), 0.1, 0.2, 0.5);
 
-		//use helper function that uses glm to create some transform matrices
-		setModel(prog, vec3(-1.7, -1.7, 0), 0, 0, 0.5);
-		mesh->draw(prog);
+		// //use helper function that uses glm to create some transform matrices
+		// setModel(prog, vec3(-1.7, -1.7, 0), 0, 0, 0.5);
+		// mesh->draw(prog);
 
-		solidColorProg->unbind();
+		// solidColorProg->unbind();
 
 		// Draw base Hierarchical person
 		prog->bind();
@@ -223,57 +368,76 @@ public:
 
 		//use helper function that uses glm to create some transform matrices
 		setModel(prog, vec3(1.7, -1.7, 0), 0, 0, 0.5);
-		bunny->draw(prog);
 
+		// //Trees
+		// for(int i=0; i<trees.size();i++) {
+		// 	Model->pushMatrix();
+		// 		Model->translate(vec3(-18, -5, 8));
+		// 		Model->scale(vec3(2, 2, 2));
+		// 		Model->rotate((0.3), vec3(0, 1, 0));
+		// 		setModel(prog, Model);
+		// 		trees[i]->draw(prog);
+		// 	Model->popMatrix();
+		// }
 
-		// draw hierarchical mesh using matrix stack
-		Model->pushMatrix();
-			Model->loadIdentity();
-			Model->translate(vec3(gTrans, 0, 0));
-			/* draw top cube - aka head */
+		// //building
+		// for(int i=0; i<buildings.size();i++) {
+		// 	Model->pushMatrix();
+		// 		Model->translate(vec3(2, -2, 2));
+		// 		Model->scale(vec3(2, 2, 2));
+		// 		Model->rotate((0.3), vec3(0, 1, 0));
+		// 		setModel(prog, Model);
+		// 		buildings[i]->draw(prog);
+		// 	Model->popMatrix();
+		// }
+
+		//car
+		for(int i=0; i<cars.size();i++) {
 			Model->pushMatrix();
-				Model->translate(vec3(0, 1.4, 0));
-				Model->scale(vec3(0.5, 0.5, 0.5));
+				Model->translate(vec3(15, -1, -5));
+				Model->scale(vec3(0.35, 0.35, 0.35));
+				Model->rotate((0.7), vec3(0, 1, 0));
 				setModel(prog, Model);
-				mesh->draw(prog);
+				cars[i]->draw(prog);
 			Model->popMatrix();
-			//draw the torso with these transforms
-			Model->pushMatrix();
-			  Model->scale(vec3(1.25, 1.35, 1.25));
-			  setModel(prog, Model);
-			  mesh->draw(prog);
-			Model->popMatrix();
-			// draw the upper 'arm' - relative 
-			//note you must change this to include 3 components!
-			Model->pushMatrix();
-			  //place at shoulder
-			  Model->translate(vec3(0.8, 0.8, 0));
-			  //rotate shoulder joint
-			  Model->rotate(sTheta, vec3(0, 0, 1));
-			  //move to shoulder joint
-			  Model->translate(vec3(0.8, 0, 0));
-	
-			    //now draw lower arm - this is INCOMPLETE and you will add a 3rd component
-			  	//right now this is in the SAME place as the upper arm
-			  	Model->pushMatrix();
-			      Model->scale(vec3(0.8, 0.25, 0.25));
-			  	  setModel(prog, Model);
-			  	  mesh->draw(prog);
-			  	Model->popMatrix();
+		}
 
-			  //Do final scale ONLY to upper arm then draw
-			  //non-uniform scale
-			  Model->scale(vec3(0.8, 0.25, 0.25));
-			  setModel(prog, Model);
-			  mesh->draw(prog);
+		//batman
+		for(int i=0; i<batmans.size();i++) {
+			Model->pushMatrix();
+				Model->rotate((3.14), vec3(0, 0, 1));
+				Model->rotate((3.14/2), vec3(-1, 0, 0));
+				Model->rotate((3.14), vec3(0, 1, 0));
+				Model->translate(vec3(7.0, 2.2, -1));
+				Model->scale(vec3(0.7, 0.7, 0.7));
+				setModel(prog, Model);
+				batmans[i]->draw(prog);
 			Model->popMatrix();
-		
-		Model->popMatrix();
+		}
+
+		//mountain
+		for(int i=0; i<mountains.size();i++) {
+			Model->pushMatrix();
+				Model->translate(vec3(-20, -20, -20));
+				Model->scale(vec3(0.5, 0.5, 0.5));
+				Model->rotate((3.14), vec3(0, 1, 0));
+				setModel(prog, Model);
+				mountains[i]->draw(prog);
+			Model->popMatrix();
+		}
+
+		//city
+		for(int i=0; i<cities.size();i++) {
+			Model->pushMatrix();
+				Model->translate(vec3(-30, -1, -25));
+				Model->scale(vec3(0.27, 0.27, 0.27));
+				Model->rotate((3.14), vec3(0, 1, 0));
+				setModel(prog, Model);
+				cities[i]->draw(prog);
+			Model->popMatrix();
+		}
 
 		prog->unbind();
-
-		//animation update example
-		sTheta = sin(glfwGetTime());
 
 		// Pop matrix stacks.
 		Projection->popMatrix();
