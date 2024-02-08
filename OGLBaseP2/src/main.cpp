@@ -24,6 +24,7 @@
 using namespace std;
 using namespace glm;
 
+
 class Application : public EventCallbacks {
 
 public:
@@ -70,6 +71,10 @@ public:
 	shared_ptr<Shape> city;
 	vector<shared_ptr<Shape>> cities;
 
+	//M4A1
+	shared_ptr<Shape> m4a1;
+	vector<shared_ptr<Shape>> m4a1s;
+
 	//example data that might be useful when trying to compute bounds on multi-shape
 	vec3 gMin;
 
@@ -86,19 +91,15 @@ public:
 		}
 		if (key == GLFW_KEY_A && action == GLFW_PRESS) {
 			gTrans += 0.2;
-			// sTheta += 0.2;
 		}
 		if (key == GLFW_KEY_D && action == GLFW_PRESS) {
 			gTrans -= 0.2;
-			// sTheta -= 0.2;
 		}
 		if (key == GLFW_KEY_W && action == GLFW_PRESS) {
 			gTrans2 -= 0.2;
-			// sTheta += 0.2;
 		}
 		if (key == GLFW_KEY_S && action == GLFW_PRESS) {
 			gTrans2 += 0.2;
-			// sTheta -= 0.2;
 		}
 		if (key == GLFW_KEY_R && action == GLFW_PRESS) {
 			sTheta -= 0.2;
@@ -120,6 +121,7 @@ public:
 			 glfwGetCursorPos(window, &posX, &posY);
 			 cout << "Pos X " << posX <<  " Pos Y " << posY << endl;
 		}
+		
 	}
 
 	void resizeCallback(GLFWwindow *window, int width, int height)
@@ -299,6 +301,23 @@ public:
 			}
 		}
 
+		//M4A1
+		vector<tinyobj::shape_t> TOshapes10;
+ 		rc = tinyobj::LoadObj(TOshapes10, objMaterials, errStr, (resourceDirectory + "/batarang.obj").c_str());
+
+		for(int i=0;i<TOshapes10.size();i++){
+			if (!rc) {
+				cerr << errStr << endl;
+			} else {
+				//for now all our shapes will not have textures - change in later labs
+				m4a1 = make_shared<Shape>(false);
+				m4a1->createShape(TOshapes10[i]);
+				m4a1->measure();
+				m4a1->init();
+				m4a1s.push_back(m4a1);
+			}
+		}
+
 		//read out information stored in the shape about its size - something like this...
 		//then do something with that information.....
 		gMin.x = mesh->min.x;
@@ -418,7 +437,7 @@ public:
 		//mountain
 		for(int i=0; i<mountains.size();i++) {
 			Model->pushMatrix();
-				Model->translate(vec3(-20, -20, -20));
+				Model->translate(vec3(-30, 5, 30));
 				Model->scale(vec3(0.5, 0.5, 0.5));
 				Model->rotate((3.14), vec3(0, 1, 0));
 				setModel(prog, Model);
@@ -436,6 +455,215 @@ public:
 				cities[i]->draw(prog);
 			Model->popMatrix();
 		}
+
+
+		//M4A1
+		for(int i=0; i<m4a1s.size();i++) {
+			Model->pushMatrix();
+				Model->translate(vec3(6 + rand()%4, 2 - rand()%2, 20*sin(glfwGetTime())));
+				Model->scale(vec3(0.005,0.005,0.005));
+				Model->rotate((3.14), vec3(0, 1, 0.5 - sin(rand()%2)));
+				setModel(prog, Model);
+				m4a1s[i]->draw(prog);
+			Model->popMatrix();
+		}
+
+				//M4A1
+		for(int i=0; i<m4a1s.size();i++) {
+			Model->pushMatrix();
+				Model->translate(vec3(8 + rand()%4, 9 - rand()%2, 20*sin(glfwGetTime())));
+				Model->scale(vec3(0.005,0.005,0.005));
+				Model->rotate((3.14), vec3(0, 1, 0.5 - sin(rand()%2)));
+				setModel(prog, Model);
+				m4a1s[i]->draw(prog);
+			Model->popMatrix();
+		}
+
+				//M4A1
+		for(int i=0; i<m4a1s.size();i++) {
+			Model->pushMatrix();
+				Model->translate(vec3(10 + rand()%4, 6 - rand()%2, 20*sin(glfwGetTime())));
+				Model->scale(vec3(0.005,0.005,0.005));
+				Model->rotate((3.14), vec3(0, 1, 0.5 - sin(rand()%2)));
+				setModel(prog, Model);
+				m4a1s[i]->draw(prog);
+			Model->popMatrix();
+		}
+
+
+		
+				//M4A1
+		for(int i=0; i<m4a1s.size();i++) {
+			Model->pushMatrix();
+				Model->translate(vec3(3 + rand()%4, 2 - rand()%2, 20*sin(glfwGetTime())));
+				Model->scale(vec3(0.005,0.005,0.005));
+				Model->rotate((3.14), vec3(0, 1, 0.5 - sin(rand()%2)));
+				setModel(prog, Model);
+				m4a1s[i]->draw(prog);
+			Model->popMatrix();
+		}
+
+				//M4A1
+		for(int i=0; i<m4a1s.size();i++) {
+			Model->pushMatrix();
+				Model->translate(vec3(1 + rand()%4, 9 - rand()%2, 20*sin(glfwGetTime())));
+				Model->scale(vec3(0.005,0.005,0.005));
+				Model->rotate((3.14), vec3(0, 1, 0.5 - sin(rand()%2)));
+				setModel(prog, Model);
+				m4a1s[i]->draw(prog);
+			Model->popMatrix();
+		}
+
+				//M4A1
+		for(int i=0; i<m4a1s.size();i++) {
+			Model->pushMatrix();
+				Model->translate(vec3(4 + rand()%4, 6 - rand()%2, 20*sin(glfwGetTime())));
+				Model->scale(vec3(0.005,0.005,0.005));
+				Model->rotate((3.14), vec3(0, 1, 0.5 - sin(rand()%2)));
+				setModel(prog, Model);
+				m4a1s[i]->draw(prog);
+			Model->popMatrix();
+		}
+
+
+
+
+
+				//M4A1
+		for(int i=0; i<m4a1s.size();i++) {
+			Model->pushMatrix();
+				Model->translate(vec3( 12 + rand()%4, 2 - rand()%2, 10*sin(glfwGetTime())));
+				Model->scale(vec3(0.005,0.005,0.005));
+				Model->rotate((3.14), vec3(0, 1, 0.5 - sin(rand()%2)));
+				setModel(prog, Model);
+				m4a1s[i]->draw(prog);
+			Model->popMatrix();
+		}
+
+				//M4A1
+		for(int i=0; i<m4a1s.size();i++) {
+			Model->pushMatrix();
+				Model->translate(vec3(6 + rand()%4, 2 - rand()%2, 20*sin(glfwGetTime())));
+				Model->scale(vec3(0.005,0.005,0.005));
+				Model->rotate((3.14), vec3(0, 1, 0.5 - sin(rand()%2)));
+				setModel(prog, Model);
+				m4a1s[i]->draw(prog);
+			Model->popMatrix();
+		}
+
+				//M4A1
+		for(int i=0; i<m4a1s.size();i++) {
+			Model->pushMatrix();
+				Model->translate(vec3(8 + rand()%4, 9 - rand()%2, 20*sin(glfwGetTime())));
+				Model->scale(vec3(0.005,0.005,0.005));
+				Model->rotate((3.14), vec3(0, 1, 0.5 - sin(rand()%2)));
+				setModel(prog, Model);
+				m4a1s[i]->draw(prog);
+			Model->popMatrix();
+		}
+
+				//M4A1
+		for(int i=0; i<m4a1s.size();i++) {
+			Model->pushMatrix();
+				Model->translate(vec3(10 + rand()%4, 6 - rand()%2, 20*sin(glfwGetTime())));
+				Model->scale(vec3(0.005,0.005,0.005));
+				Model->rotate((3.14), vec3(0, 1, 0.5 - sin(rand()%2)));
+				setModel(prog, Model);
+				m4a1s[i]->draw(prog);
+			Model->popMatrix();
+		}
+
+				//M4A1
+		for(int i=0; i<m4a1s.size();i++) {
+			Model->pushMatrix();
+				Model->translate(vec3( 12 + rand()%4, 2 - rand()%2, 10*sin(glfwGetTime())));
+				Model->scale(vec3(0.005,0.005,0.005));
+				Model->rotate((3.14), vec3(0, 1, 0.5 - sin(rand()%2)));
+				setModel(prog, Model);
+				m4a1s[i]->draw(prog);
+			Model->popMatrix();
+		}
+
+
+				//M4A1
+		for(int i=0; i<m4a1s.size();i++) {
+			Model->pushMatrix();
+				Model->translate(vec3(6 + rand()%4, 2 - rand()%2, 20*sin(glfwGetTime())));
+				Model->scale(vec3(0.005,0.005,0.005));
+				Model->rotate((3.14), vec3(0, 1, 0.5 - sin(rand()%2)));
+				setModel(prog, Model);
+				m4a1s[i]->draw(prog);
+			Model->popMatrix();
+		}
+
+				//M4A1
+		for(int i=0; i<m4a1s.size();i++) {
+			Model->pushMatrix();
+				Model->translate(vec3(rand()%4, 9 - rand()%2, 20*sin(glfwGetTime())));
+				Model->scale(vec3(0.005,0.005,0.005));
+				Model->rotate((3.14), vec3(0, 1, 0.5 - sin(rand()%2)));
+				setModel(prog, Model);
+				m4a1s[i]->draw(prog);
+			Model->popMatrix();
+		}
+
+				//M4A1
+		for(int i=0; i<m4a1s.size();i++) {
+			Model->pushMatrix();
+				Model->translate(vec3(rand()%4, 6 - rand()%2, 20*sin(glfwGetTime())));
+				Model->scale(vec3(0.005,0.005,0.005));
+				Model->rotate((3.14), vec3(0, 1, 0.5 - sin(rand()%2)));
+				setModel(prog, Model);
+				m4a1s[i]->draw(prog);
+			Model->popMatrix();
+		}
+
+				//M4A1
+		for(int i=0; i<m4a1s.size();i++) {
+			Model->pushMatrix();
+				Model->translate(vec3(rand()%4, 2 - rand()%2, 10*sin(glfwGetTime())));
+				Model->scale(vec3(0.005,0.005,0.005));
+				Model->rotate((3.14), vec3(0, 1, 0.5 - sin(rand()%2)));
+				setModel(prog, Model);
+				m4a1s[i]->draw(prog);
+			Model->popMatrix();
+		}
+
+
+						//M4A1
+		for(int i=0; i<m4a1s.size();i++) {
+			Model->pushMatrix();
+				Model->translate(vec3(rand()%4, 13 - rand()%2, 20*sin(glfwGetTime())));
+				Model->scale(vec3(0.005,0.005,0.005));
+				Model->rotate((3.14), vec3(0, 1, 0.5 - sin(rand()%2)));
+				setModel(prog, Model);
+				m4a1s[i]->draw(prog);
+			Model->popMatrix();
+		}
+
+				//M4A1
+		for(int i=0; i<m4a1s.size();i++) {
+			Model->pushMatrix();
+				Model->translate(vec3(2 + rand()%4, 9 - rand()%2, 20*sin(glfwGetTime())));
+				Model->scale(vec3(0.005,0.005,0.005));
+				Model->rotate((3.14), vec3(0, 1, 0.5 - sin(rand()%2)));
+				setModel(prog, Model);
+				m4a1s[i]->draw(prog);
+			Model->popMatrix();
+		}
+
+				//M4A1
+		for(int i=0; i<m4a1s.size();i++) {
+			Model->pushMatrix();
+				Model->translate(vec3(5 + rand()%4, 12 - rand()%2, 10*sin(glfwGetTime())));
+				Model->scale(vec3(0.005,0.005,0.005));
+				Model->rotate((3.14), vec3(0, 1, 0.5 - sin(rand()%2)));
+				setModel(prog, Model);
+				m4a1s[i]->draw(prog);
+			Model->popMatrix();
+		}
+
+
 
 		prog->unbind();
 
