@@ -388,28 +388,6 @@ public:
 		//use helper function that uses glm to create some transform matrices
 		setModel(prog, vec3(1.7, -1.7, 0), 0, 0, 0.5);
 
-		// //Trees
-		// for(int i=0; i<trees.size();i++) {
-		// 	Model->pushMatrix();
-		// 		Model->translate(vec3(-18, -5, 8));
-		// 		Model->scale(vec3(2, 2, 2));
-		// 		Model->rotate((0.3), vec3(0, 1, 0));
-		// 		setModel(prog, Model);
-		// 		trees[i]->draw(prog);
-		// 	Model->popMatrix();
-		// }
-
-		// //building
-		// for(int i=0; i<buildings.size();i++) {
-		// 	Model->pushMatrix();
-		// 		Model->translate(vec3(2, -2, 2));
-		// 		Model->scale(vec3(2, 2, 2));
-		// 		Model->rotate((0.3), vec3(0, 1, 0));
-		// 		setModel(prog, Model);
-		// 		buildings[i]->draw(prog);
-		// 	Model->popMatrix();
-		// }
-
 		//car
 		for(int i=0; i<cars.size();i++) {
 			Model->pushMatrix();
@@ -455,12 +433,19 @@ public:
 				cities[i]->draw(prog);
 			Model->popMatrix();
 		}
+		prog->unbind();
 
+		solidColorProg->bind();
+		glUniformMatrix4fv(prog->getUniform("P"), 1, GL_FALSE, value_ptr(Projection->topMatrix()));
+		glUniformMatrix4fv(prog->getUniform("V"), 1, GL_FALSE, value_ptr(View->topMatrix()));
+
+		GLint solidColorUni = solidColorProg->getUniform("solidColor");
+		glUniform3f(solidColorUni, 0, 0, 0);
 
 		//M4A1
 		for(int i=0; i<m4a1s.size();i++) {
 			Model->pushMatrix();
-				Model->translate(vec3(6 + rand()%4, 2 - rand()%2, 20*sin(glfwGetTime())));
+				Model->translate(vec3(6 + rand()%4, 7 - rand()%2, 20*sin(glfwGetTime())));
 				Model->scale(vec3(0.005,0.005,0.005));
 				Model->rotate((3.14), vec3(0, 1, 0.5 - sin(rand()%2)));
 				setModel(prog, Model);
@@ -495,7 +480,7 @@ public:
 				//M4A1
 		for(int i=0; i<m4a1s.size();i++) {
 			Model->pushMatrix();
-				Model->translate(vec3(3 + rand()%4, 2 - rand()%2, 20*sin(glfwGetTime())));
+				Model->translate(vec3(3 + rand()%4, 7 - rand()%2, 20*sin(glfwGetTime())));
 				Model->scale(vec3(0.005,0.005,0.005));
 				Model->rotate((3.14), vec3(0, 1, 0.5 - sin(rand()%2)));
 				setModel(prog, Model);
@@ -506,7 +491,7 @@ public:
 				//M4A1
 		for(int i=0; i<m4a1s.size();i++) {
 			Model->pushMatrix();
-				Model->translate(vec3(1 + rand()%4, 9 - rand()%2, 20*sin(glfwGetTime())));
+				Model->translate(vec3(-rand()%4, 9 - rand()%2, 20*sin(glfwGetTime())));
 				Model->scale(vec3(0.005,0.005,0.005));
 				Model->rotate((3.14), vec3(0, 1, 0.5 - sin(rand()%2)));
 				setModel(prog, Model);
@@ -524,15 +509,11 @@ public:
 				m4a1s[i]->draw(prog);
 			Model->popMatrix();
 		}
-
-
-
-
-
+		
 				//M4A1
 		for(int i=0; i<m4a1s.size();i++) {
 			Model->pushMatrix();
-				Model->translate(vec3( 12 + rand()%4, 2 - rand()%2, 10*sin(glfwGetTime())));
+				Model->translate(vec3( 12 + rand()%4, 11 - rand()%2, 10*sin(glfwGetTime())));
 				Model->scale(vec3(0.005,0.005,0.005));
 				Model->rotate((3.14), vec3(0, 1, 0.5 - sin(rand()%2)));
 				setModel(prog, Model);
@@ -543,7 +524,7 @@ public:
 				//M4A1
 		for(int i=0; i<m4a1s.size();i++) {
 			Model->pushMatrix();
-				Model->translate(vec3(6 + rand()%4, 2 - rand()%2, 20*sin(glfwGetTime())));
+				Model->translate(vec3(6 + rand()%4, 10 - rand()%2, 20*sin(glfwGetTime())));
 				Model->scale(vec3(0.005,0.005,0.005));
 				Model->rotate((3.14), vec3(0, 1, 0.5 - sin(rand()%2)));
 				setModel(prog, Model);
@@ -576,7 +557,7 @@ public:
 				//M4A1
 		for(int i=0; i<m4a1s.size();i++) {
 			Model->pushMatrix();
-				Model->translate(vec3( 12 + rand()%4, 2 - rand()%2, 10*sin(glfwGetTime())));
+				Model->translate(vec3( 12 + rand()%4, 7 - rand()%2, 10*sin(glfwGetTime())));
 				Model->scale(vec3(0.005,0.005,0.005));
 				Model->rotate((3.14), vec3(0, 1, 0.5 - sin(rand()%2)));
 				setModel(prog, Model);
@@ -588,7 +569,7 @@ public:
 				//M4A1
 		for(int i=0; i<m4a1s.size();i++) {
 			Model->pushMatrix();
-				Model->translate(vec3(6 + rand()%4, 2 - rand()%2, 20*sin(glfwGetTime())));
+				Model->translate(vec3(6 + rand()%4, 14 - rand()%2, 20*sin(glfwGetTime())));
 				Model->scale(vec3(0.005,0.005,0.005));
 				Model->rotate((3.14), vec3(0, 1, 0.5 - sin(rand()%2)));
 				setModel(prog, Model);
@@ -621,7 +602,7 @@ public:
 				//M4A1
 		for(int i=0; i<m4a1s.size();i++) {
 			Model->pushMatrix();
-				Model->translate(vec3(rand()%4, 2 - rand()%2, 10*sin(glfwGetTime())));
+				Model->translate(vec3(rand()%4, 7 - rand()%2, 10*sin(glfwGetTime())));
 				Model->scale(vec3(0.005,0.005,0.005));
 				Model->rotate((3.14), vec3(0, 1, 0.5 - sin(rand()%2)));
 				setModel(prog, Model);
@@ -630,7 +611,7 @@ public:
 		}
 
 
-						//M4A1
+		//M4A1
 		for(int i=0; i<m4a1s.size();i++) {
 			Model->pushMatrix();
 				Model->translate(vec3(rand()%4, 13 - rand()%2, 20*sin(glfwGetTime())));
@@ -641,7 +622,7 @@ public:
 			Model->popMatrix();
 		}
 
-				//M4A1
+		//M4A1
 		for(int i=0; i<m4a1s.size();i++) {
 			Model->pushMatrix();
 				Model->translate(vec3(2 + rand()%4, 9 - rand()%2, 20*sin(glfwGetTime())));
@@ -652,7 +633,7 @@ public:
 			Model->popMatrix();
 		}
 
-				//M4A1
+		//M4A1
 		for(int i=0; i<m4a1s.size();i++) {
 			Model->pushMatrix();
 				Model->translate(vec3(5 + rand()%4, 12 - rand()%2, 10*sin(glfwGetTime())));
@@ -663,9 +644,7 @@ public:
 			Model->popMatrix();
 		}
 
-
-
-		prog->unbind();
+		solidColorProg->unbind();
 
 		// Pop matrix stacks.
 		Projection->popMatrix();
