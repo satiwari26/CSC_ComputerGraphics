@@ -57,10 +57,10 @@ RM = "C:/Program Files/CMake/bin/cmake.exe" -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = C:/Users/tiwar/Desktop/compGraphics/OGLBaseLab4-24
+CMAKE_SOURCE_DIR = C:/Users/tiwar/Desktop/compGraphics/OGLBaseLighting
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = C:/Users/tiwar/Desktop/compGraphics/OGLBaseLab4-24/build
+CMAKE_BINARY_DIR = C:/Users/tiwar/Desktop/compGraphics/OGLBaseLighting/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -132,14 +132,14 @@ install/strip/fast: preinstall/fast
 
 # The main all target
 all: cmake_check_build_system
-	cd C:/Users/tiwar/Desktop/compGraphics/OGLBaseLab4-24/build && $(CMAKE_COMMAND) -E cmake_progress_start C:/Users/tiwar/Desktop/compGraphics/OGLBaseLab4-24/build/CMakeFiles C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug//CMakeFiles/progress.marks
-	cd C:/Users/tiwar/Desktop/compGraphics/OGLBaseLab4-24/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/all
-	$(CMAKE_COMMAND) -E cmake_progress_start C:/Users/tiwar/Desktop/compGraphics/OGLBaseLab4-24/build/CMakeFiles 0
+	cd C:/Users/tiwar/Desktop/compGraphics/OGLBaseLighting/build && $(CMAKE_COMMAND) -E cmake_progress_start C:/Users/tiwar/Desktop/compGraphics/OGLBaseLighting/build/CMakeFiles C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug//CMakeFiles/progress.marks
+	cd C:/Users/tiwar/Desktop/compGraphics/OGLBaseLighting/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/all
+	$(CMAKE_COMMAND) -E cmake_progress_start C:/Users/tiwar/Desktop/compGraphics/OGLBaseLighting/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	cd C:/Users/tiwar/Desktop/compGraphics/OGLBaseLab4-24/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/clean
+	cd C:/Users/tiwar/Desktop/compGraphics/OGLBaseLighting/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/clean
 .PHONY : clean
 
 # The main clean target
@@ -148,22 +148,22 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	cd C:/Users/tiwar/Desktop/compGraphics/OGLBaseLab4-24/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/preinstall
+	cd C:/Users/tiwar/Desktop/compGraphics/OGLBaseLighting/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	cd C:/Users/tiwar/Desktop/compGraphics/OGLBaseLab4-24/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/preinstall
+	cd C:/Users/tiwar/Desktop/compGraphics/OGLBaseLighting/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	cd C:/Users/tiwar/Desktop/compGraphics/OGLBaseLab4-24/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+	cd C:/Users/tiwar/Desktop/compGraphics/OGLBaseLighting/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
 # Convenience name for target.
 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/CMakeFiles/uninstall.dir/rule:
-	cd C:/Users/tiwar/Desktop/compGraphics/OGLBaseLab4-24/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/CMakeFiles/uninstall.dir/rule
+	cd C:/Users/tiwar/Desktop/compGraphics/OGLBaseLighting/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/CMakeFiles/uninstall.dir/rule
 .PHONY : C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/CMakeFiles/uninstall.dir/rule
 
 # Convenience name for target.
@@ -172,7 +172,7 @@ uninstall: C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/CMakeFiles/u
 
 # fast build rule for target.
 uninstall/fast:
-	cd C:/Users/tiwar/Desktop/compGraphics/OGLBaseLab4-24/build && $(MAKE) $(MAKESILENT) -f C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/CMakeFiles/uninstall.dir/build.make C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/CMakeFiles/uninstall.dir/build
+	cd C:/Users/tiwar/Desktop/compGraphics/OGLBaseLighting/build && $(MAKE) $(MAKESILENT) -f C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/CMakeFiles/uninstall.dir/build.make C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/CMakeFiles/uninstall.dir/build
 .PHONY : uninstall/fast
 
 # Help Target
@@ -199,6 +199,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	cd C:/Users/tiwar/Desktop/compGraphics/OGLBaseLab4-24/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+	cd C:/Users/tiwar/Desktop/compGraphics/OGLBaseLighting/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

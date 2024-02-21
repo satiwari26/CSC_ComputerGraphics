@@ -37,6 +37,9 @@ public:
 	// Our shader program
 	std::shared_ptr<Program> solidColorProg;
 
+	//Our shader program for textures
+	std::shared_ptr<Program> texProg;
+
 	// Shape to be used (from  file) - modify to support multiple
 	shared_ptr<Shape> mesh;
 
@@ -71,9 +74,13 @@ public:
 	shared_ptr<Shape> city;
 	vector<shared_ptr<Shape>> cities;
 
-	//M4A1
+	//batarang
 	shared_ptr<Shape> m4a1;
 	vector<shared_ptr<Shape>> m4a1s;
+
+	//batarang
+	shared_ptr<Shape> brick;
+	vector<shared_ptr<Shape>> bricks;
 
 	//example data that might be useful when trying to compute bounds on multi-shape
 	vec3 gMin;
@@ -82,6 +89,8 @@ public:
 	float sTheta = 0;
 	float gTrans = -6;
 	float gTrans2 = 0;
+	float gLight = 0;
+	float gMove = 0;
 
 	void keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods)
 	{
@@ -89,26 +98,38 @@ public:
 		{
 			glfwSetWindowShouldClose(window, GL_TRUE);
 		}
-		if (key == GLFW_KEY_A && action == GLFW_PRESS) {
+		if (key == GLFW_KEY_A && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
 			gTrans += 0.2;
 		}
-		if (key == GLFW_KEY_D && action == GLFW_PRESS) {
+		if (key == GLFW_KEY_D && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
 			gTrans -= 0.2;
 		}
-		if (key == GLFW_KEY_W && action == GLFW_PRESS) {
+		if (key == GLFW_KEY_Q && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
+			gLight -= 0.2;
+		}
+		if (key == GLFW_KEY_E && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
+			gLight += 0.2;
+		}
+		if (key == GLFW_KEY_W && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
 			gTrans2 -= 0.2;
 		}
-		if (key == GLFW_KEY_S && action == GLFW_PRESS) {
+		if (key == GLFW_KEY_S && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
 			gTrans2 += 0.2;
 		}
-		if (key == GLFW_KEY_R && action == GLFW_PRESS) {
+		if (key == GLFW_KEY_R && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
 			sTheta -= 0.2;
 		}
-		if (key == GLFW_KEY_Z && action == GLFW_PRESS) {
+		if (key == GLFW_KEY_Z && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
 			glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
 		}
 		if (key == GLFW_KEY_Z && action == GLFW_RELEASE) {
 			glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
+		}
+		if (key == GLFW_KEY_UP && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
+			gMove += 0.2;
+		}
+		if (key == GLFW_KEY_DOWN && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
+			gMove -= 0.2;
 		}
 	}
 
@@ -146,6 +167,11 @@ public:
 		prog->addUniform("P");
 		prog->addUniform("V");
 		prog->addUniform("M");
+		prog->addUniform("MatAmb");
+		prog->addUniform("MatSpec");
+		prog->addUniform("MatShine");
+		prog->addUniform("MatDif");
+		prog->addUniform("lightPos");
 		prog->addAttribute("vertPos");
 		prog->addAttribute("vertNor");
 
@@ -160,6 +186,19 @@ public:
 		solidColorProg->addUniform("solidColor");
 		solidColorProg->addAttribute("vertPos");
 		solidColorProg->addAttribute("vertNor");
+
+		// Initialize the GLSL program that we will use for texture mapping
+		texProg = make_shared<Program>();	
+		texProg->setVerbose(true);
+		texProg->setShaderNames(resourceDirectory + "/tex_vert.glsl", resourceDirectory + "/tex_frag0.glsl");
+		texProg->init();
+		texProg->addUniform("P");
+		texProg->addUniform("V");
+		texProg->addUniform("M");
+		texProg->addUniform("Texture0");
+		texProg->addAttribute("vertPos");
+		texProg->addAttribute("vertNor");
+		texProg->addAttribute("vertTex");
 	}
 
 	void initGeom(const std::string& resourceDirectory)
@@ -301,7 +340,7 @@ public:
 			}
 		}
 
-		//M4A1
+		//batarang
 		vector<tinyobj::shape_t> TOshapes10;
  		rc = tinyobj::LoadObj(TOshapes10, objMaterials, errStr, (resourceDirectory + "/batarang.obj").c_str());
 
@@ -317,12 +356,60 @@ public:
 				m4a1s.push_back(m4a1);
 			}
 		}
+		
+		//bricks
+		vector<tinyobj::shape_t> TOshapes11;
+ 		rc = tinyobj::LoadObj(TOshapes11, objMaterials, errStr, (resourceDirectory + "/brick.obj").c_str());
+
+		for(int i=0;i<TOshapes11.size();i++){
+			if (!rc) {
+				cerr << errStr << endl;
+			} else {
+				//for now all our shapes will not have textures - change in later labs
+				brick = make_shared<Shape>(false);
+				brick->createShape(TOshapes11[i]);
+				brick->measure();
+				brick->init();
+				bricks.push_back(brick);
+			}
+		}
 
 		//read out information stored in the shape about its size - something like this...
 		//then do something with that information.....
 		gMin.x = mesh->min.x;
 		gMin.y = mesh->min.y;
 	}
+
+
+	//helper function to pass material data to the GPU
+	void SetMaterial(shared_ptr<Program> curS, int i) {
+
+    	switch (i) {
+    		case 0: //
+    			glUniform3f(curS->getUniform("MatAmb"), 0.096, 0.046, 0.095);
+    			glUniform3f(curS->getUniform("MatDif"), 0.96, 0.46, 0.95);
+    			glUniform3f(curS->getUniform("MatSpec"), 0.45, 0.2, 0.45);
+    			glUniform1f(curS->getUniform("MatShine"), 120.0);
+    		break;
+    		case 1: // 
+    			glUniform3f(curS->getUniform("MatAmb"), 0.063, 0.038, 0.1);
+    			glUniform3f(curS->getUniform("MatDif"), 0.63, 0.38, 1.0);
+    			glUniform3f(curS->getUniform("MatSpec"), 0.3, 0.2, 0.5);
+    			glUniform1f(curS->getUniform("MatShine"), 4.0);
+    		break;
+    		case 2: //
+    			// glUniform3f(curS->getUniform("MatAmb"), 0.004, 0.05, 0.09);
+    			// glUniform3f(curS->getUniform("MatDif"), 0.04, 0.5, 0.9);
+    			// glUniform3f(curS->getUniform("MatSpec"), 0.02, 0.25, 0.45);
+    			// glUniform1f(curS->getUniform("MatShine"), 27.9);
+				glUniform3f(curS->getUniform("MatAmb"), 0.003, 0.035, 0.045);
+				glUniform3f(curS->getUniform("MatDif"), 0.03, 0.35, 0.55);
+				glUniform3f(curS->getUniform("MatSpec"), 0.01, 0.125, 0.325);
+				glUniform1f(curS->getUniform("MatShine"), 27.9);
+    		break;
+  		}
+	}
+
 
 	/* helper for sending top of the matrix strack to GPU */
 	void setModel(std::shared_ptr<Program> prog, std::shared_ptr<MatrixStack>M) {
@@ -364,26 +451,13 @@ public:
 		View->pushMatrix();
 			View->loadIdentity();
 			View->rotate(sTheta, vec3(0, -0.5, 0));
-			View->translate(vec3(gTrans, gTrans2, -20));
-
-		// Draw a solid colored sphere
-		// solidColorProg->bind();
-		// //send the projetion and view for solid shader
-		// glUniformMatrix4fv(solidColorProg->getUniform("P"), 1, GL_FALSE, value_ptr(Projection->topMatrix()));
-		// glUniformMatrix4fv(solidColorProg->getUniform("V"), 1, GL_FALSE, value_ptr(View->topMatrix()));
-		// //send in the color to use
-		// glUniform3f(solidColorProg->getUniform("solidColor"), 0.1, 0.2, 0.5);
-
-		// //use helper function that uses glm to create some transform matrices
-		// setModel(prog, vec3(-1.7, -1.7, 0), 0, 0, 0.5);
-		// mesh->draw(prog);
-
-		// solidColorProg->unbind();
+			View->translate(vec3(gTrans - 4,gTrans2 - 3, -20 + gMove));
 
 		// Draw base Hierarchical person
 		prog->bind();
 		glUniformMatrix4fv(prog->getUniform("P"), 1, GL_FALSE, value_ptr(Projection->topMatrix()));
 		glUniformMatrix4fv(prog->getUniform("V"), 1, GL_FALSE, value_ptr(View->topMatrix()));
+		glUniform3f(prog->getUniform("lightPos"), 7.0 + gLight, 5.0, -2);
 
 		//use helper function that uses glm to create some transform matrices
 		setModel(prog, vec3(1.7, -1.7, 0), 0, 0, 0.5);
@@ -394,6 +468,7 @@ public:
 				Model->translate(vec3(15, -1, -5));
 				Model->scale(vec3(0.35, 0.35, 0.35));
 				Model->rotate((0.7), vec3(0, 1, 0));
+				SetMaterial(prog, 2);
 				setModel(prog, Model);
 				cars[i]->draw(prog);
 			Model->popMatrix();
@@ -407,6 +482,7 @@ public:
 				Model->rotate((3.14), vec3(0, 1, 0));
 				Model->translate(vec3(7.0, 2.2, -1));
 				Model->scale(vec3(0.7, 0.7, 0.7));
+				SetMaterial(prog, 2);
 				setModel(prog, Model);
 				batmans[i]->draw(prog);
 			Model->popMatrix();
@@ -418,10 +494,64 @@ public:
 				Model->translate(vec3(-30, 5, 30));
 				Model->scale(vec3(0.5, 0.5, 0.5));
 				Model->rotate((3.14), vec3(0, 1, 0));
+				SetMaterial(prog, 2);
 				setModel(prog, Model);
 				mountains[i]->draw(prog);
 			Model->popMatrix();
 		}
+
+		//bricks
+		Model->pushMatrix();
+			Model->translate(vec3(7, -0.8, 5));
+			Model->scale(vec3(0.005, 0.005, 0.005));
+			Model->rotate(0.5*(3.14), vec3(0, 1, 0));
+			SetMaterial(prog, 2);
+			setModel(prog, Model);
+			bricks[0]->draw(prog);
+		Model->popMatrix();
+
+		Model->pushMatrix();
+			Model->translate(vec3(7.3, -0.7, 4));
+			Model->scale(vec3(0.005, 0.005, 0.005));
+			// Model->rotate(0.5*(3.14), vec3(0, 1, 0));
+			Model->rotate(0.25*(3.14), vec3(0, 0, 1));
+			SetMaterial(prog, 2);
+			setModel(prog, Model);
+			bricks[0]->draw(prog);
+		Model->popMatrix();
+
+
+		//bricks
+		Model->pushMatrix();
+			Model->translate(vec3(15, -0.8, 5));
+			Model->scale(vec3(0.005, 0.005, 0.005));
+			Model->rotate(0.25*(3.14), vec3(0, 1, 0));
+			SetMaterial(prog, 2);
+			setModel(prog, Model);
+			bricks[0]->draw(prog);
+		Model->popMatrix();
+
+		//bricks
+		Model->pushMatrix();
+			Model->translate(vec3(13, -1.4, 5));
+			Model->scale(vec3(0.005, 0.005, 0.005));
+			Model->rotate(0.5*(3.14), vec3(-1, 0, 0));
+			SetMaterial(prog, 2);
+			setModel(prog, Model);
+			bricks[0]->draw(prog);
+		Model->popMatrix();
+
+		//bricks
+		Model->pushMatrix();
+			Model->translate(vec3(16.5, -0.8, 10));
+			Model->scale(vec3(0.005, 0.005, 0.005));
+			Model->rotate(0.5*(3.14), vec3(0, 0, -1));
+			Model->rotate(0.5*(3.14), vec3(-1, 0, 0));
+			SetMaterial(prog, 2);
+			setModel(prog, Model);
+			bricks[0]->draw(prog);
+		Model->popMatrix();
+
 
 		//city
 		for(int i=0; i<cities.size();i++) {
@@ -429,6 +559,7 @@ public:
 				Model->translate(vec3(-30, -1, -25));
 				Model->scale(vec3(0.27, 0.27, 0.27));
 				Model->rotate((3.14), vec3(0, 1, 0));
+				SetMaterial(prog, 2);
 				setModel(prog, Model);
 				cities[i]->draw(prog);
 			Model->popMatrix();
@@ -442,7 +573,7 @@ public:
 		GLint solidColorUni = solidColorProg->getUniform("solidColor");
 		glUniform3f(solidColorUni, 0, 0, 0);
 
-		//M4A1
+		//batarang
 		for(int i=0; i<m4a1s.size();i++) {
 			Model->pushMatrix();
 				Model->translate(vec3(6 + rand()%4, 7 - rand()%2, 20*sin(glfwGetTime())));
@@ -453,7 +584,7 @@ public:
 			Model->popMatrix();
 		}
 
-				//M4A1
+				//batarang
 		for(int i=0; i<m4a1s.size();i++) {
 			Model->pushMatrix();
 				Model->translate(vec3(8 + rand()%4, 9 - rand()%2, 20*sin(glfwGetTime())));
@@ -464,7 +595,7 @@ public:
 			Model->popMatrix();
 		}
 
-				//M4A1
+				//batarang
 		for(int i=0; i<m4a1s.size();i++) {
 			Model->pushMatrix();
 				Model->translate(vec3(10 + rand()%4, 6 - rand()%2, 20*sin(glfwGetTime())));
@@ -474,10 +605,8 @@ public:
 				m4a1s[i]->draw(prog);
 			Model->popMatrix();
 		}
-
-
 		
-				//M4A1
+		//batarang
 		for(int i=0; i<m4a1s.size();i++) {
 			Model->pushMatrix();
 				Model->translate(vec3(3 + rand()%4, 7 - rand()%2, 20*sin(glfwGetTime())));
@@ -488,7 +617,7 @@ public:
 			Model->popMatrix();
 		}
 
-				//M4A1
+				//batarang
 		for(int i=0; i<m4a1s.size();i++) {
 			Model->pushMatrix();
 				Model->translate(vec3(-rand()%4, 9 - rand()%2, 20*sin(glfwGetTime())));
@@ -499,7 +628,7 @@ public:
 			Model->popMatrix();
 		}
 
-				//M4A1
+				//batarang
 		for(int i=0; i<m4a1s.size();i++) {
 			Model->pushMatrix();
 				Model->translate(vec3(4 + rand()%4, 6 - rand()%2, 20*sin(glfwGetTime())));
@@ -510,7 +639,7 @@ public:
 			Model->popMatrix();
 		}
 		
-				//M4A1
+				//batarang
 		for(int i=0; i<m4a1s.size();i++) {
 			Model->pushMatrix();
 				Model->translate(vec3( 12 + rand()%4, 11 - rand()%2, 10*sin(glfwGetTime())));
@@ -521,7 +650,7 @@ public:
 			Model->popMatrix();
 		}
 
-				//M4A1
+				//batarang
 		for(int i=0; i<m4a1s.size();i++) {
 			Model->pushMatrix();
 				Model->translate(vec3(6 + rand()%4, 10 - rand()%2, 20*sin(glfwGetTime())));
@@ -532,7 +661,7 @@ public:
 			Model->popMatrix();
 		}
 
-				//M4A1
+				//batarang
 		for(int i=0; i<m4a1s.size();i++) {
 			Model->pushMatrix();
 				Model->translate(vec3(8 + rand()%4, 9 - rand()%2, 20*sin(glfwGetTime())));
@@ -543,7 +672,7 @@ public:
 			Model->popMatrix();
 		}
 
-				//M4A1
+				//batarang
 		for(int i=0; i<m4a1s.size();i++) {
 			Model->pushMatrix();
 				Model->translate(vec3(10 + rand()%4, 6 - rand()%2, 20*sin(glfwGetTime())));
@@ -554,7 +683,7 @@ public:
 			Model->popMatrix();
 		}
 
-				//M4A1
+				//batarang
 		for(int i=0; i<m4a1s.size();i++) {
 			Model->pushMatrix();
 				Model->translate(vec3( 12 + rand()%4, 7 - rand()%2, 10*sin(glfwGetTime())));
@@ -566,7 +695,7 @@ public:
 		}
 
 
-				//M4A1
+				//batarang
 		for(int i=0; i<m4a1s.size();i++) {
 			Model->pushMatrix();
 				Model->translate(vec3(6 + rand()%4, 14 - rand()%2, 20*sin(glfwGetTime())));
@@ -577,7 +706,7 @@ public:
 			Model->popMatrix();
 		}
 
-				//M4A1
+				//batarang
 		for(int i=0; i<m4a1s.size();i++) {
 			Model->pushMatrix();
 				Model->translate(vec3(rand()%4, 9 - rand()%2, 20*sin(glfwGetTime())));
@@ -588,7 +717,7 @@ public:
 			Model->popMatrix();
 		}
 
-				//M4A1
+				//batarang
 		for(int i=0; i<m4a1s.size();i++) {
 			Model->pushMatrix();
 				Model->translate(vec3(rand()%4, 6 - rand()%2, 20*sin(glfwGetTime())));
@@ -599,7 +728,7 @@ public:
 			Model->popMatrix();
 		}
 
-				//M4A1
+				//batarang
 		for(int i=0; i<m4a1s.size();i++) {
 			Model->pushMatrix();
 				Model->translate(vec3(rand()%4, 7 - rand()%2, 10*sin(glfwGetTime())));
@@ -611,7 +740,7 @@ public:
 		}
 
 
-		//M4A1
+		//batarang
 		for(int i=0; i<m4a1s.size();i++) {
 			Model->pushMatrix();
 				Model->translate(vec3(rand()%4, 13 - rand()%2, 20*sin(glfwGetTime())));
@@ -622,7 +751,7 @@ public:
 			Model->popMatrix();
 		}
 
-		//M4A1
+		//batarang
 		for(int i=0; i<m4a1s.size();i++) {
 			Model->pushMatrix();
 				Model->translate(vec3(2 + rand()%4, 9 - rand()%2, 20*sin(glfwGetTime())));
@@ -633,7 +762,7 @@ public:
 			Model->popMatrix();
 		}
 
-		//M4A1
+		//batarang
 		for(int i=0; i<m4a1s.size();i++) {
 			Model->pushMatrix();
 				Model->translate(vec3(5 + rand()%4, 12 - rand()%2, 10*sin(glfwGetTime())));

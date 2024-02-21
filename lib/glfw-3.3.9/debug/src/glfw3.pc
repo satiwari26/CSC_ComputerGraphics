@@ -1,7 +1,7 @@
-prefix=C:/Program Files (x86)/Lab3
+prefix=C:/Program Files (x86)/P3Base
 exec_prefix=${prefix}
-includedir=C:/Program Files (x86)/Lab3/include
-libdir=C:/Program Files (x86)/Lab3/lib
+includedir=C:/Program Files (x86)/P3Base/include
+libdir=C:/Program Files (x86)/P3Base/lib
 
 Name: GLFW
 Description: A multi-platform library for OpenGL, window and input

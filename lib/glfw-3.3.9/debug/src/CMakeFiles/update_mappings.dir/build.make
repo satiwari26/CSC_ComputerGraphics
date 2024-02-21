@@ -53,10 +53,10 @@ RM = "C:/Program Files/CMake/bin/cmake.exe" -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = C:/Users/tiwar/Desktop/compGraphics/OGLBaseLab4-24
+CMAKE_SOURCE_DIR = C:/Users/tiwar/Desktop/compGraphics/OGLBaseLighting
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = C:/Users/tiwar/Desktop/compGraphics/OGLBaseLab4-24/build
+CMAKE_BINARY_DIR = C:/Users/tiwar/Desktop/compGraphics/OGLBaseLighting/build
 
 # Utility rule file for update_mappings.
 
@@ -67,7 +67,7 @@ include C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/
 include C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/update_mappings.dir/progress.make
 
 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/update_mappings:
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=C:/Users/tiwar/Desktop/compGraphics/OGLBaseLab4-24/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Updating gamepad mappings from upstream repository"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=C:/Users/tiwar/Desktop/compGraphics/OGLBaseLighting/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Updating gamepad mappings from upstream repository"
 	cd C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/src && "C:/Program Files/CMake/bin/cmake.exe" -P C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/CMake/GenerateMappings.cmake mappings.h.in mappings.h
 
 update_mappings: C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/update_mappings
@@ -83,6 +83,6 @@ C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/update_m
 .PHONY : C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/update_mappings.dir/clean
 
 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/update_mappings.dir/depend:
-	$(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" C:/Users/tiwar/Desktop/compGraphics/OGLBaseLab4-24 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/src C:/Users/tiwar/Desktop/compGraphics/OGLBaseLab4-24/build C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/update_mappings.dir/DependInfo.cmake "--color=$(COLOR)"
+	$(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" C:/Users/tiwar/Desktop/compGraphics/OGLBaseLighting C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/src C:/Users/tiwar/Desktop/compGraphics/OGLBaseLighting/build C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/update_mappings.dir/DependInfo.cmake "--color=$(COLOR)"
 .PHONY : C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/update_mappings.dir/depend
 

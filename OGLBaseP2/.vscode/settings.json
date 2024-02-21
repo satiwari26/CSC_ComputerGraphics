@@ -3,6 +3,7 @@
         "memory": "cpp",
         "vector": "cpp",
         "stack": "cpp",
-        "cmath": "cpp"
+        "cmath": "cpp",
+        "iostream": "cpp"
     }
 }
