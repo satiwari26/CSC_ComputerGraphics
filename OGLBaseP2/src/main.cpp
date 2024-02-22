@@ -38,6 +38,9 @@ public:
 	// Our shader program
 	std::shared_ptr<Program> solidColorProg;
 
+	//for lightning effect
+	int lightCounter = 0;
+
 	//Our shader program for textures
 	std::shared_ptr<Program> texProg;
 
@@ -189,6 +192,9 @@ public:
 		prog->addUniform("MatShine");
 		prog->addUniform("MatDif");
 		prog->addUniform("lightPos");
+		prog->addUniform("lightIntensity");
+		prog->addUniform("lightPos2");
+		prog->addUniform("lightIntensity2");
 		prog->addAttribute("vertPos");
 		prog->addAttribute("vertNor");
 
@@ -514,7 +520,21 @@ public:
 		prog->bind();
 		glUniformMatrix4fv(prog->getUniform("P"), 1, GL_FALSE, value_ptr(Projection->topMatrix()));
 		glUniformMatrix4fv(prog->getUniform("V"), 1, GL_FALSE, value_ptr(View->topMatrix()));
-		glUniform3f(prog->getUniform("lightPos"), 7.0 + gLight, 5.0, -2);
+		glUniform3f(prog->getUniform("lightPos"), 7.0 + gLight, 5.0, -1.5);
+		glUniform1f(prog->getUniform("lightIntensity"), 0.856);
+		glUniform3f(prog->getUniform("lightPos2"), 50.0, 10.0, -2);
+
+		//for lightning effect
+		if(rand()%78 == 0){
+			lightCounter = 5;
+		}
+		if(lightCounter > 0){
+			glUniform1f(prog->getUniform("lightIntensity2"), 1.3);
+			lightCounter--;
+		}
+		else{
+			glUniform1f(prog->getUniform("lightIntensity2"), 0);
+		}
 
 		//use helper function that uses glm to create some transform matrices
 		setModel(prog, vec3(1.7, -1.7, 0), 0, 0, 0.5);
