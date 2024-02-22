@@ -59,6 +59,52 @@ void Shape::measure() {
    max.z = maxZ;
 }
 
+void Shape::calcNormals(){
+	if(norBuf.empty()) {
+			// Resize the normal array to the same size as the vertex array
+		norBuf.resize(posBuf.size(), 0.0);
+
+		// Go through each face and calculate the normal of that face
+		for (size_t i = 0; i < eleBuf.size() / 3; i++) {
+			// Get the three vertices of the face
+			glm::vec3 p1 = glm::vec3(posBuf[3*eleBuf[3*i+0]+0], 
+									posBuf[3*eleBuf[3*i+0]+1], 
+									posBuf[3*eleBuf[3*i+0]+2]);
+			glm::vec3 p2 = glm::vec3(posBuf[3*eleBuf[3*i+1]+0], 
+									posBuf[3*eleBuf[3*i+1]+1], 
+									posBuf[3*eleBuf[3*i+1]+2]);
+			glm::vec3 p3 = glm::vec3(posBuf[3*eleBuf[3*i+2]+0], 
+									posBuf[3*eleBuf[3*i+2]+1], 
+									posBuf[3*eleBuf[3*i+2]+2]);
+
+			// Calculate the normal of the face
+			glm::vec3 n = glm::normalize(glm::cross(p2 - p1, p3 - p1));
+
+			// Add the normal to the normal array for each vertex
+			norBuf[3*eleBuf[3*i+0]+0] += n.x;
+			norBuf[3*eleBuf[3*i+0]+1] += n.y;
+			norBuf[3*eleBuf[3*i+0]+2] += n.z;
+
+			norBuf[3*eleBuf[3*i+1]+0] += n.x;
+			norBuf[3*eleBuf[3*i+1]+1] += n.y;
+			norBuf[3*eleBuf[3*i+1]+2] += n.z;
+
+			norBuf[3*eleBuf[3*i+2]+0] += n.x;
+			norBuf[3*eleBuf[3*i+2]+1] += n.y;
+			norBuf[3*eleBuf[3*i+2]+2] += n.z;
+		}
+
+		// Normalize the normal array
+		for (size_t i = 0; i < norBuf.size() / 3; i++) {
+			glm::vec3 n = glm::vec3(norBuf[3*i+0], norBuf[3*i+1], norBuf[3*i+2]);
+			n = glm::normalize(n);
+			norBuf[3*i+0] = n.x;
+			norBuf[3*i+1] = n.y;
+			norBuf[3*i+2] = n.z;
+		}
+	}
+}
+
 void Shape::init()
 {
    // Initialize the vertex array object

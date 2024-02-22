@@ -53,10 +53,10 @@ RM = "C:/Program Files/CMake/bin/cmake.exe" -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = C:/Users/tiwar/Desktop/compGraphics/OGLBaseLighting
+CMAKE_SOURCE_DIR = C:/Users/tiwar/Desktop/compGraphics/OGLBaseP2
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = C:/Users/tiwar/Desktop/compGraphics/OGLBaseLighting/build
+CMAKE_BINARY_DIR = C:/Users/tiwar/Desktop/compGraphics/OGLBaseP2/build
 
 # Include any dependencies generated for this target.
 include C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/depend.make
@@ -73,7 +73,7 @@ C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir
 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/context.c.obj: C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/includes_C.rsp
 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/context.c.obj: C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/src/context.c
 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/context.c.obj: C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/tiwar/Desktop/compGraphics/OGLBaseLighting/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/context.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/tiwar/Desktop/compGraphics/OGLBaseP2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/context.c.obj"
 	cd C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src && C:/msys64/ucrt64/bin/cc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -Wdeclaration-after-statement -MD -MT C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/context.c.obj -MF CMakeFiles/glfw.dir/context.c.obj.d -o CMakeFiles/glfw.dir/context.c.obj -c C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/src/context.c
 
 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/context.c.i: cmake_force
@@ -88,7 +88,7 @@ C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir
 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/init.c.obj: C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/includes_C.rsp
 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/init.c.obj: C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/src/init.c
 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/init.c.obj: C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/tiwar/Desktop/compGraphics/OGLBaseLighting/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/init.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/tiwar/Desktop/compGraphics/OGLBaseP2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/init.c.obj"
 	cd C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src && C:/msys64/ucrt64/bin/cc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -Wdeclaration-after-statement -MD -MT C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/init.c.obj -MF CMakeFiles/glfw.dir/init.c.obj.d -o CMakeFiles/glfw.dir/init.c.obj -c C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/src/init.c
 
 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/init.c.i: cmake_force
@@ -103,7 +103,7 @@ C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir
 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/input.c.obj: C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/includes_C.rsp
 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/input.c.obj: C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/src/input.c
 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/input.c.obj: C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/tiwar/Desktop/compGraphics/OGLBaseLighting/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/input.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/tiwar/Desktop/compGraphics/OGLBaseP2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/input.c.obj"
 	cd C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src && C:/msys64/ucrt64/bin/cc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -Wdeclaration-after-statement -MD -MT C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/input.c.obj -MF CMakeFiles/glfw.dir/input.c.obj.d -o CMakeFiles/glfw.dir/input.c.obj -c C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/src/input.c
 
 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/input.c.i: cmake_force
@@ -118,7 +118,7 @@ C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir
 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/monitor.c.obj: C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/includes_C.rsp
 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/monitor.c.obj: C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/src/monitor.c
 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/monitor.c.obj: C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/tiwar/Desktop/compGraphics/OGLBaseLighting/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building C object C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/monitor.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/tiwar/Desktop/compGraphics/OGLBaseP2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building C object C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/monitor.c.obj"
 	cd C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src && C:/msys64/ucrt64/bin/cc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -Wdeclaration-after-statement -MD -MT C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/monitor.c.obj -MF CMakeFiles/glfw.dir/monitor.c.obj.d -o CMakeFiles/glfw.dir/monitor.c.obj -c C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/src/monitor.c
 
 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/monitor.c.i: cmake_force
@@ -133,7 +133,7 @@ C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir
 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/vulkan.c.obj: C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/includes_C.rsp
 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/vulkan.c.obj: C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/src/vulkan.c
 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/vulkan.c.obj: C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/tiwar/Desktop/compGraphics/OGLBaseLighting/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building C object C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/vulkan.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/tiwar/Desktop/compGraphics/OGLBaseP2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building C object C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/vulkan.c.obj"
 	cd C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src && C:/msys64/ucrt64/bin/cc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -Wdeclaration-after-statement -MD -MT C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/vulkan.c.obj -MF CMakeFiles/glfw.dir/vulkan.c.obj.d -o CMakeFiles/glfw.dir/vulkan.c.obj -c C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/src/vulkan.c
 
 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/vulkan.c.i: cmake_force
@@ -148,7 +148,7 @@ C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir
 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/window.c.obj: C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/includes_C.rsp
 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/window.c.obj: C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/src/window.c
 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/window.c.obj: C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/tiwar/Desktop/compGraphics/OGLBaseLighting/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building C object C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/window.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/tiwar/Desktop/compGraphics/OGLBaseP2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building C object C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/window.c.obj"
 	cd C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src && C:/msys64/ucrt64/bin/cc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -Wdeclaration-after-statement -MD -MT C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/window.c.obj -MF CMakeFiles/glfw.dir/window.c.obj.d -o CMakeFiles/glfw.dir/window.c.obj -c C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/src/window.c
 
 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/window.c.i: cmake_force
@@ -163,7 +163,7 @@ C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir
 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/win32_init.c.obj: C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/includes_C.rsp
 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/win32_init.c.obj: C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/src/win32_init.c
 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/win32_init.c.obj: C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/tiwar/Desktop/compGraphics/OGLBaseLighting/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building C object C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/win32_init.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/tiwar/Desktop/compGraphics/OGLBaseP2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building C object C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/win32_init.c.obj"
 	cd C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src && C:/msys64/ucrt64/bin/cc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -Wdeclaration-after-statement -MD -MT C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/win32_init.c.obj -MF CMakeFiles/glfw.dir/win32_init.c.obj.d -o CMakeFiles/glfw.dir/win32_init.c.obj -c C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/src/win32_init.c
 
 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/win32_init.c.i: cmake_force
@@ -178,7 +178,7 @@ C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir
 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/win32_joystick.c.obj: C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/includes_C.rsp
 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/win32_joystick.c.obj: C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/src/win32_joystick.c
 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/win32_joystick.c.obj: C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/tiwar/Desktop/compGraphics/OGLBaseLighting/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building C object C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/win32_joystick.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/tiwar/Desktop/compGraphics/OGLBaseP2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building C object C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/win32_joystick.c.obj"
 	cd C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src && C:/msys64/ucrt64/bin/cc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -Wdeclaration-after-statement -MD -MT C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/win32_joystick.c.obj -MF CMakeFiles/glfw.dir/win32_joystick.c.obj.d -o CMakeFiles/glfw.dir/win32_joystick.c.obj -c C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/src/win32_joystick.c
 
 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/win32_joystick.c.i: cmake_force
@@ -193,7 +193,7 @@ C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir
 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/win32_monitor.c.obj: C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/includes_C.rsp
 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/win32_monitor.c.obj: C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/src/win32_monitor.c
 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/win32_monitor.c.obj: C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/tiwar/Desktop/compGraphics/OGLBaseLighting/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building C object C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/win32_monitor.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/tiwar/Desktop/compGraphics/OGLBaseP2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building C object C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/win32_monitor.c.obj"
 	cd C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src && C:/msys64/ucrt64/bin/cc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -Wdeclaration-after-statement -MD -MT C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/win32_monitor.c.obj -MF CMakeFiles/glfw.dir/win32_monitor.c.obj.d -o CMakeFiles/glfw.dir/win32_monitor.c.obj -c C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/src/win32_monitor.c
 
 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/win32_monitor.c.i: cmake_force
@@ -208,7 +208,7 @@ C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir
 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/win32_time.c.obj: C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/includes_C.rsp
 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/win32_time.c.obj: C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/src/win32_time.c
 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/win32_time.c.obj: C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/tiwar/Desktop/compGraphics/OGLBaseLighting/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building C object C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/win32_time.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/tiwar/Desktop/compGraphics/OGLBaseP2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building C object C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/win32_time.c.obj"
 	cd C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src && C:/msys64/ucrt64/bin/cc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -Wdeclaration-after-statement -MD -MT C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/win32_time.c.obj -MF CMakeFiles/glfw.dir/win32_time.c.obj.d -o CMakeFiles/glfw.dir/win32_time.c.obj -c C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/src/win32_time.c
 
 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/win32_time.c.i: cmake_force
@@ -223,7 +223,7 @@ C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir
 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/win32_thread.c.obj: C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/includes_C.rsp
 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/win32_thread.c.obj: C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/src/win32_thread.c
 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/win32_thread.c.obj: C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/tiwar/Desktop/compGraphics/OGLBaseLighting/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building C object C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/win32_thread.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/tiwar/Desktop/compGraphics/OGLBaseP2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building C object C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/win32_thread.c.obj"
 	cd C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src && C:/msys64/ucrt64/bin/cc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -Wdeclaration-after-statement -MD -MT C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/win32_thread.c.obj -MF CMakeFiles/glfw.dir/win32_thread.c.obj.d -o CMakeFiles/glfw.dir/win32_thread.c.obj -c C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/src/win32_thread.c
 
 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/win32_thread.c.i: cmake_force
@@ -238,7 +238,7 @@ C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir
 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/win32_window.c.obj: C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/includes_C.rsp
 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/win32_window.c.obj: C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/src/win32_window.c
 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/win32_window.c.obj: C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/tiwar/Desktop/compGraphics/OGLBaseLighting/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building C object C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/win32_window.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/tiwar/Desktop/compGraphics/OGLBaseP2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building C object C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/win32_window.c.obj"
 	cd C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src && C:/msys64/ucrt64/bin/cc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -Wdeclaration-after-statement -MD -MT C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/win32_window.c.obj -MF CMakeFiles/glfw.dir/win32_window.c.obj.d -o CMakeFiles/glfw.dir/win32_window.c.obj -c C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/src/win32_window.c
 
 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/win32_window.c.i: cmake_force
@@ -253,7 +253,7 @@ C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir
 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/wgl_context.c.obj: C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/includes_C.rsp
 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/wgl_context.c.obj: C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/src/wgl_context.c
 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/wgl_context.c.obj: C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/tiwar/Desktop/compGraphics/OGLBaseLighting/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building C object C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/wgl_context.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/tiwar/Desktop/compGraphics/OGLBaseP2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building C object C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/wgl_context.c.obj"
 	cd C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src && C:/msys64/ucrt64/bin/cc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -Wdeclaration-after-statement -MD -MT C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/wgl_context.c.obj -MF CMakeFiles/glfw.dir/wgl_context.c.obj.d -o CMakeFiles/glfw.dir/wgl_context.c.obj -c C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/src/wgl_context.c
 
 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/wgl_context.c.i: cmake_force
@@ -268,7 +268,7 @@ C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir
 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/egl_context.c.obj: C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/includes_C.rsp
 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/egl_context.c.obj: C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/src/egl_context.c
 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/egl_context.c.obj: C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/tiwar/Desktop/compGraphics/OGLBaseLighting/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building C object C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/egl_context.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/tiwar/Desktop/compGraphics/OGLBaseP2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building C object C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/egl_context.c.obj"
 	cd C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src && C:/msys64/ucrt64/bin/cc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -Wdeclaration-after-statement -MD -MT C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/egl_context.c.obj -MF CMakeFiles/glfw.dir/egl_context.c.obj.d -o CMakeFiles/glfw.dir/egl_context.c.obj -c C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/src/egl_context.c
 
 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/egl_context.c.i: cmake_force
@@ -283,7 +283,7 @@ C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir
 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/osmesa_context.c.obj: C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/includes_C.rsp
 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/osmesa_context.c.obj: C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/src/osmesa_context.c
 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/osmesa_context.c.obj: C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/tiwar/Desktop/compGraphics/OGLBaseLighting/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building C object C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/osmesa_context.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/tiwar/Desktop/compGraphics/OGLBaseP2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building C object C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/osmesa_context.c.obj"
 	cd C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src && C:/msys64/ucrt64/bin/cc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -Wdeclaration-after-statement -MD -MT C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/osmesa_context.c.obj -MF CMakeFiles/glfw.dir/osmesa_context.c.obj.d -o CMakeFiles/glfw.dir/osmesa_context.c.obj -c C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/src/osmesa_context.c
 
 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/osmesa_context.c.i: cmake_force
@@ -332,7 +332,7 @@ C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/libglfw3.a: C:/User
 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/libglfw3.a: C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/osmesa_context.c.obj
 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/libglfw3.a: C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/build.make
 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/libglfw3.a: C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=C:/Users/tiwar/Desktop/compGraphics/OGLBaseLighting/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Linking C static library libglfw3.a"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=C:/Users/tiwar/Desktop/compGraphics/OGLBaseP2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Linking C static library libglfw3.a"
 	cd C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src && $(CMAKE_COMMAND) -P CMakeFiles/glfw.dir/cmake_clean_target.cmake
 	cd C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/glfw.dir/link.txt --verbose=$(VERBOSE)
 
@@ -345,6 +345,6 @@ C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir
 .PHONY : C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/clean
 
 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/depend:
-	$(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" C:/Users/tiwar/Desktop/compGraphics/OGLBaseLighting C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/src C:/Users/tiwar/Desktop/compGraphics/OGLBaseLighting/build C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/DependInfo.cmake "--color=$(COLOR)"
+	$(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" C:/Users/tiwar/Desktop/compGraphics/OGLBaseP2 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/src C:/Users/tiwar/Desktop/compGraphics/OGLBaseP2/build C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/DependInfo.cmake "--color=$(COLOR)"
 .PHONY : C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/src/CMakeFiles/glfw.dir/depend
 

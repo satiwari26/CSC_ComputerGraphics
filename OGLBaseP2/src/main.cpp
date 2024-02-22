@@ -13,6 +13,7 @@
 #include "Shape.h"
 #include "MatrixStack.h"
 #include "WindowManager.h"
+#include "Texture.h"
 
 #define TINYOBJLOADER_IMPLEMENTATION
 #include <tiny_obj_loader/tiny_obj_loader.h>
@@ -61,6 +62,8 @@ public:
 	//batman
 	shared_ptr<Shape> batman;
 	vector<shared_ptr<Shape>> batmans;
+	vector<tinyobj::shape_t> TOshapes6;
+	vector<tinyobj::material_t> objMaterials2;
 
 	//grass
 	shared_ptr<Shape> grass;
@@ -70,17 +73,28 @@ public:
 	shared_ptr<Shape> mountain;
 	vector<shared_ptr<Shape>> mountains;
 
+	//create texture for the world
+	shared_ptr<Texture> texture0;
+
 	//city
 	shared_ptr<Shape> city;
 	vector<shared_ptr<Shape>> cities;
+	vector<tinyobj::shape_t> TOshapes9;
+	vector<tinyobj::material_t> objMaterials1;
+
+	bool switchShader = false;
 
 	//batarang
 	shared_ptr<Shape> m4a1;
 	vector<shared_ptr<Shape>> m4a1s;
 
-	//batarang
+	//bricks
 	shared_ptr<Shape> brick;
 	vector<shared_ptr<Shape>> bricks;
+
+	//batarang
+	shared_ptr<Shape> brick1;
+	vector<shared_ptr<Shape>> bricks1;
 
 	//example data that might be useful when trying to compute bounds on multi-shape
 	vec3 gMin;
@@ -130,6 +144,9 @@ public:
 		}
 		if (key == GLFW_KEY_DOWN && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
 			gMove -= 0.2;
+		}
+		if (key == GLFW_KEY_M && (action == GLFW_PRESS)) {
+			switchShader = !switchShader;
 		}
 	}
 
@@ -199,6 +216,13 @@ public:
 		texProg->addAttribute("vertPos");
 		texProg->addAttribute("vertNor");
 		texProg->addAttribute("vertTex");
+
+		//read in a load the texture
+		texture0 = make_shared<Texture>();
+  		texture0->setFilename(resourceDirectory + "/grass1.jpg");
+  		texture0->init();
+  		texture0->setUnit(0);
+  		texture0->setWrapModes(GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE);
 	}
 
 	void initGeom(const std::string& resourceDirectory)
@@ -273,8 +297,7 @@ public:
 		}
 
 		//batman
-		vector<tinyobj::shape_t> TOshapes6;
- 		rc = tinyobj::LoadObj(TOshapes6, objMaterials, errStr, (resourceDirectory + "/batman.obj").c_str());
+ 		rc = tinyobj::LoadObj(TOshapes6, objMaterials2, errStr, (resourceDirectory + "/batman.obj").c_str(), (resourceDirectory + "/").c_str());
 		
 		for(int i=0;i<TOshapes6.size();i++){
 			if (!rc) {
@@ -324,8 +347,8 @@ public:
 		}
 
 		//city
-		vector<tinyobj::shape_t> TOshapes9;
- 		rc = tinyobj::LoadObj(TOshapes9, objMaterials, errStr, (resourceDirectory + "/city.obj").c_str());
+		// vector<tinyobj::shape_t> TOshapes9;
+ 		rc = tinyobj::LoadObj(TOshapes9, objMaterials1, errStr, (resourceDirectory + "/city.obj").c_str(), (resourceDirectory + "/").c_str());
 
 		for(int i=0;i<TOshapes9.size();i++){
 			if (!rc) {
@@ -369,8 +392,27 @@ public:
 				brick = make_shared<Shape>(false);
 				brick->createShape(TOshapes11[i]);
 				brick->measure();
+				brick->calcNormals();
 				brick->init();
 				bricks.push_back(brick);
+			}
+		}
+
+		//bricks1
+		vector<tinyobj::shape_t> TOshapes12;
+ 		rc = tinyobj::LoadObj(TOshapes12, objMaterials, errStr, (resourceDirectory + "/brick.obj").c_str());
+
+		for(int i=0;i<TOshapes12.size();i++){
+			if (!rc) {
+				cerr << errStr << endl;
+			} else {
+				//for now all our shapes will not have textures - change in later labs
+				brick1 = make_shared<Shape>(true);
+				brick1->createShape(TOshapes12[i]);
+				brick1->measure();
+				brick1->calcNormals();
+				brick1->init();
+				bricks1.push_back(brick1);
 			}
 		}
 
@@ -408,6 +450,21 @@ public:
 				glUniform1f(curS->getUniform("MatShine"), 27.9);
     		break;
   		}
+	}
+
+	void printMaterial(tinyobj:: material_t material){
+		cout << "Ambient: " << material.ambient[0] << " " << material.ambient[1] << " " << material.ambient[2] << endl;
+		cout << "Diffuse: " << material.diffuse[0] << " " << material.diffuse[1] << " " << material.diffuse[2] << endl;
+		cout << "Specular: " << material.specular[0] << " " << material.specular[1] << " " << material.specular[2] << endl;
+		cout << "Shininess: " << material.shininess << endl;
+	}
+
+	//set material with the glsl values:
+	void SetMaterialVal(shared_ptr<Program> curS, tinyobj:: material_t material) {
+		glUniform3f(curS->getUniform("MatAmb"), 0.003*material.ambient[0], 0.003*material.ambient[1], 0.003*material.ambient[2]);
+		glUniform3f(curS->getUniform("MatDif"), 0.003*material.diffuse[0], 0.35*material.diffuse[1], 0.55*material.diffuse[2]);
+		glUniform3f(curS->getUniform("MatSpec"), 0.01*material.specular[0], 0.01*material.specular[1], 0.01*material.specular[2]);
+		glUniform1f(curS->getUniform("MatShine"), material.shininess);
 	}
 
 
@@ -482,7 +539,12 @@ public:
 				Model->rotate((3.14), vec3(0, 1, 0));
 				Model->translate(vec3(7.0, 2.2, -1));
 				Model->scale(vec3(0.7, 0.7, 0.7));
-				SetMaterial(prog, 2);
+
+				int materialBatManId = TOshapes6[i].mesh.material_ids[0];
+				tinyobj::material_t material = objMaterials2[materialBatManId];
+				SetMaterialVal(prog, material);
+
+				// SetMaterial(prog, 2);
 				setModel(prog, Model);
 				batmans[i]->draw(prog);
 			Model->popMatrix();
@@ -531,15 +593,17 @@ public:
 			bricks[0]->draw(prog);
 		Model->popMatrix();
 
-		//bricks
-		Model->pushMatrix();
-			Model->translate(vec3(13, -1.4, 5));
-			Model->scale(vec3(0.005, 0.005, 0.005));
-			Model->rotate(0.5*(3.14), vec3(-1, 0, 0));
-			SetMaterial(prog, 2);
-			setModel(prog, Model);
-			bricks[0]->draw(prog);
-		Model->popMatrix();
+		if(!switchShader){
+			//bricks
+			Model->pushMatrix();
+				Model->translate(vec3(13, -1.4, 5));
+				Model->scale(vec3(0.005, 0.005, 0.005));
+				Model->rotate(0.5*(3.14), vec3(-1, 0, 0));
+				SetMaterial(prog, 2);
+				setModel(prog, Model);
+				bricks[0]->draw(prog);
+			Model->popMatrix();
+		}
 
 		//bricks
 		Model->pushMatrix();
@@ -559,16 +623,38 @@ public:
 				Model->translate(vec3(-30, -1, -25));
 				Model->scale(vec3(0.27, 0.27, 0.27));
 				Model->rotate((3.14), vec3(0, 1, 0));
+
+				int materialId = TOshapes9[i].mesh.material_ids[0];
+				tinyobj::material_t material = objMaterials1[materialId];
+				// SetMaterialVal(prog, material);
 				SetMaterial(prog, 2);
+
 				setModel(prog, Model);
 				cities[i]->draw(prog);
 			Model->popMatrix();
 		}
 		prog->unbind();
 
+		if(switchShader){
+			texProg->bind();
+			glUniformMatrix4fv(texProg->getUniform("P"), 1, GL_FALSE, value_ptr(Projection->topMatrix()));
+			glUniformMatrix4fv(texProg->getUniform("V"), 1, GL_FALSE, value_ptr(View->topMatrix()));
+
+			// //bricks
+			Model->pushMatrix();
+				Model->translate(vec3(13, -1.4, 5));
+				Model->scale(vec3(0.005, 0.005, 0.005));
+				Model->rotate(0.5*(3.14), vec3(-1, 0, 0));
+				texture0->bind(texProg->getUniform("Texture0"));
+				setModel(texProg, Model);
+				bricks1[0]->draw(texProg);
+			Model->popMatrix();
+			texProg->unbind();
+		}
+
 		solidColorProg->bind();
-		glUniformMatrix4fv(prog->getUniform("P"), 1, GL_FALSE, value_ptr(Projection->topMatrix()));
-		glUniformMatrix4fv(prog->getUniform("V"), 1, GL_FALSE, value_ptr(View->topMatrix()));
+		glUniformMatrix4fv(solidColorProg->getUniform("P"), 1, GL_FALSE, value_ptr(Projection->topMatrix()));
+		glUniformMatrix4fv(solidColorProg->getUniform("V"), 1, GL_FALSE, value_ptr(View->topMatrix()));
 
 		GLint solidColorUni = solidColorProg->getUniform("solidColor");
 		glUniform3f(solidColorUni, 0, 0, 0);

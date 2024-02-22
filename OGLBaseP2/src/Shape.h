@@ -16,6 +16,7 @@ public:
 	Shape(bool textured);
 	virtual ~Shape();
 	void createShape(tinyobj::shape_t & shape);
+	void calcNormals();
 	void init();
 	void measure();
 	void draw(const std::shared_ptr<Program> prog) const;

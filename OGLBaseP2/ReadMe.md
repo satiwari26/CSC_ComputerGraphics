@@ -4,6 +4,12 @@
 - The scene basically describes the prespective of the batman and his pose as he is going to encounter some serious challenges.
 
 
+## Update in the following code
+- My bricks.obj file does not have the normals attach to it.
+- I have to manually calculate the normals.
+- I have added the texture to one of my bricks.
+- The texture of the bricks can be changed by pressing key 'M'
+
 ## Run And Execute
 - create the build dir and run make
 - execute the exucutable file
@@ -11,8 +17,11 @@
 
 ## Interacting with the world
 - w, s moves the camera up and down in the world
+- arrow key up moves forward
+- arrow key down moves back
 - a,d movees the camera left and right
 - R rotates the camera around.
+- q,e moves the light source to left and right
 
 ## Explanation of Transform
 - my world consist city, mountains, batman, bats and car

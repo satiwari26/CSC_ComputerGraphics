@@ -53,10 +53,10 @@ RM = "C:/Program Files/CMake/bin/cmake.exe" -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = C:/Users/tiwar/Desktop/compGraphics/OGLBaseLighting
+CMAKE_SOURCE_DIR = C:/Users/tiwar/Desktop/compGraphics/OGLBaseP2
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = C:/Users/tiwar/Desktop/compGraphics/OGLBaseLighting/build
+CMAKE_BINARY_DIR = C:/Users/tiwar/Desktop/compGraphics/OGLBaseP2/build
 
 # Utility rule file for uninstall.
 
@@ -82,6 +82,6 @@ C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/CMakeFiles/uninstall.di
 .PHONY : C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/CMakeFiles/uninstall.dir/clean
 
 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/CMakeFiles/uninstall.dir/depend:
-	$(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" C:/Users/tiwar/Desktop/compGraphics/OGLBaseLighting C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9 C:/Users/tiwar/Desktop/compGraphics/OGLBaseLighting/build C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/CMakeFiles/uninstall.dir/DependInfo.cmake "--color=$(COLOR)"
+	$(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" C:/Users/tiwar/Desktop/compGraphics/OGLBaseP2 C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9 C:/Users/tiwar/Desktop/compGraphics/OGLBaseP2/build C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/CMakeFiles/uninstall.dir/DependInfo.cmake "--color=$(COLOR)"
 .PHONY : C:/Users/tiwar/Desktop/compGraphics/lib/glfw-3.3.9/debug/CMakeFiles/uninstall.dir/depend
 
