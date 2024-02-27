@@ -14,9 +14,12 @@
 #include "MatrixStack.h"
 #include "WindowManager.h"
 #include "Texture.h"
+#include "Bezier.h"
+#include "Spline.h"
 
 #define TINYOBJLOADER_IMPLEMENTATION
 #include <tiny_obj_loader/tiny_obj_loader.h>
+#define PI 3.1415927
 
 // value_ptr for glm
 #include <glm/gtc/type_ptr.hpp>
@@ -61,6 +64,13 @@ public:
 	//building
 	shared_ptr<Shape> building;
 	vector<shared_ptr<Shape>> buildings;
+
+	//background skybox
+	shared_ptr<Shape> cube;
+	vector<shared_ptr<Shape>> cubes;
+	//texture for the skybox
+	shared_ptr<Texture> skyBoxTexture;
+	shared_ptr<Texture> skyBoxTexture2;
 
 	//batman
 	shared_ptr<Shape> batman;
@@ -109,6 +119,19 @@ public:
 	float gLight = 0;
 	float gMove = 0;
 
+	//camera
+	double g_phi, g_theta;
+	vec3 view = vec3(0, 0, 1);
+	vec3 strafe = vec3(1, 0, 0);
+	vec3 g_eye = vec3(0, 1, 0);
+	vec3 g_lookAt = vec3(0, 1, -4);
+
+	vec3 initialEye = vec3(0, 1, 0);
+	vec3 initialLookAt = vec3(0, 1, -4);
+
+	Spline splinepath[2];
+	bool goCamera = false;
+
 	void keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods)
 	{
 		if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
@@ -127,10 +150,10 @@ public:
 		if (key == GLFW_KEY_E && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
 			gLight += 0.2;
 		}
-		if (key == GLFW_KEY_W && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
+		if (key == GLFW_KEY_UP && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
 			gTrans2 -= 0.2;
 		}
-		if (key == GLFW_KEY_S && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
+		if (key == GLFW_KEY_DOWN && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
 			gTrans2 += 0.2;
 		}
 		if (key == GLFW_KEY_R && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
@@ -142,14 +165,17 @@ public:
 		if (key == GLFW_KEY_Z && action == GLFW_RELEASE) {
 			glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
 		}
-		if (key == GLFW_KEY_UP && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
+		if (key == GLFW_KEY_W && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
 			gMove += 0.2;
 		}
-		if (key == GLFW_KEY_DOWN && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
+		if (key == GLFW_KEY_S && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
 			gMove -= 0.2;
 		}
 		if (key == GLFW_KEY_M && (action == GLFW_PRESS)) {
 			switchShader = !switchShader;
+		}
+		if (key == GLFW_KEY_G && action == GLFW_RELEASE) {
+			goCamera = !goCamera;
 		}
 	}
 
@@ -165,6 +191,11 @@ public:
 		
 	}
 
+	void scrollCallback(GLFWwindow* window, double deltaX, double deltaY) {
+   		cout << "xDel + yDel " << deltaX << " " << deltaY << endl;
+   		//fill in for game camera
+	}
+
 	void resizeCallback(GLFWwindow *window, int width, int height)
 	{
 		glViewport(0, 0, width, height);
@@ -178,6 +209,8 @@ public:
 		glClearColor(.12f, .34f, .56f, 1.0f);
 		// Enable z-buffer test.
 		glEnable(GL_DEPTH_TEST);
+
+		g_theta = -PI/2.0;
 
 		// Initialize the GLSL program.
 		prog = make_shared<Program>();
@@ -219,6 +252,7 @@ public:
 		texProg->addUniform("V");
 		texProg->addUniform("M");
 		texProg->addUniform("Texture0");
+		texProg->addUniform("lightPos");
 		texProg->addAttribute("vertPos");
 		texProg->addAttribute("vertNor");
 		texProg->addAttribute("vertTex");
@@ -229,16 +263,37 @@ public:
   		texture0->init();
   		texture0->setUnit(0);
   		texture0->setWrapModes(GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE);
+
+		//sky box texture
+		skyBoxTexture = make_shared<Texture>();
+		skyBoxTexture->setFilename(resourceDirectory + "/boundingBox1.jpg");
+		skyBoxTexture->init();
+		skyBoxTexture->setUnit(0);
+		skyBoxTexture->setWrapModes(GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE);
+
+		//sky box texture2
+		skyBoxTexture2 = make_shared<Texture>();
+		skyBoxTexture2->setFilename(resourceDirectory + "/boundingBox2.jpg");
+		skyBoxTexture2->init();
+		skyBoxTexture2->setUnit(0);
+		skyBoxTexture2->setWrapModes(GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE);
+
+		// init splines up and down
+    //    splinepath[0] = Spline(glm::vec3(-6,0,5), glm::vec3(-1,-5,5), glm::vec3(1, 5, 5), glm::vec3(2,0,5), 5);
+    //    splinepath[1] = Spline(glm::vec3(2,0,5), glm::vec3(3,-2,5), glm::vec3(-0.25, 0.25, 5), glm::vec3(0,0,5), 5);
+
+		float bx = 7.0;
+		float by = 2.2;
+		float bz = -1.0;
+
+		// Move towards Batman
+		splinepath[0] = Spline(glm::vec3(-3,0,5), glm::vec3(1,3,20), glm::vec3(bx + 7, by+4, bz -30), glm::vec3(bx-3, by, bz + 5), 15);
 	}
 
 	void initGeom(const std::string& resourceDirectory)
 	{
 
-		//EXAMPLE set up to read one shape from one obj file - convert to read several
-		// Initialize mesh
-		// Load geometry
- 		// Some obj files contain material information.We'll ignore them for this assignment.
- 		vector<tinyobj::shape_t> TOshapes;
+		vector<tinyobj::shape_t> TOshapes;
  		vector<tinyobj::material_t> objMaterials;
  		string errStr;
 		//load in the mesh and make the shape(s)
@@ -253,6 +308,11 @@ public:
 			mesh->measure();
 			mesh->init();
 		}
+		
+		//read out information stored in the shape about its size - something like this...
+		//then do something with that information.....
+		gMin.x = mesh->min.x;
+		gMin.y = mesh->min.y;
 
 		//load in another mesh and make the shape(s)
 		vector<tinyobj::shape_t> TOshapes2;
@@ -336,21 +396,21 @@ public:
 		}
 
 		//mountain
-		vector<tinyobj::shape_t> TOshapes8;
- 		rc = tinyobj::LoadObj(TOshapes8, objMaterials, errStr, (resourceDirectory + "/mountain.obj").c_str());
+		// vector<tinyobj::shape_t> TOshapes8;
+ 		// rc = tinyobj::LoadObj(TOshapes8, objMaterials, errStr, (resourceDirectory + "/mountain.obj").c_str());
 
-		for(int i=0;i<TOshapes8.size();i++){
-			if (!rc) {
-				cerr << errStr << endl;
-			} else {
-				//for now all our shapes will not have textures - change in later labs
-				mountain = make_shared<Shape>(false);
-				mountain->createShape(TOshapes8[i]);
-				mountain->measure();
-				mountain->init();
-				mountains.push_back(mountain);
-			}
-		}
+		// for(int i=0;i<TOshapes8.size();i++){
+		// 	if (!rc) {
+		// 		cerr << errStr << endl;
+		// 	} else {
+		// 		//for now all our shapes will not have textures - change in later labs
+		// 		mountain = make_shared<Shape>(false);
+		// 		mountain->createShape(TOshapes8[i]);
+		// 		mountain->measure();
+		// 		mountain->init();
+		// 		mountains.push_back(mountain);
+		// 	}
+		// }
 
 		//city
 		// vector<tinyobj::shape_t> TOshapes9;
@@ -366,6 +426,21 @@ public:
 				city->measure();
 				city->init();
 				cities.push_back(city);
+			}
+		}
+
+		vector<tinyobj::shape_t> TOshapes15;
+		rc = tinyobj::LoadObj(TOshapes15, objMaterials, errStr, (resourceDirectory + "/cube1.obj").c_str());
+		for(int i=0;i<TOshapes15.size();i++){
+			if (!rc) {
+				cerr << errStr << endl;
+			} else {
+				//for now all our shapes will not have textures - change in later labs
+				cube = make_shared<Shape>(true);
+				cube->createShape(TOshapes15[0]);
+				cube->measure();
+				cube->init();
+				cubes.push_back(cube);
 			}
 		}
 
@@ -421,11 +496,6 @@ public:
 				bricks1.push_back(brick1);
 			}
 		}
-
-		//read out information stored in the shape about its size - something like this...
-		//then do something with that information.....
-		gMin.x = mesh->min.x;
-		gMin.y = mesh->min.y;
 	}
 
 
@@ -450,7 +520,7 @@ public:
     			// glUniform3f(curS->getUniform("MatDif"), 0.04, 0.5, 0.9);
     			// glUniform3f(curS->getUniform("MatSpec"), 0.02, 0.25, 0.45);
     			// glUniform1f(curS->getUniform("MatShine"), 27.9);
-				glUniform3f(curS->getUniform("MatAmb"), 0.003, 0.035, 0.045);
+				glUniform3f(curS->getUniform("MatAmb"), 0.003, 0.0, 0.003);
 				glUniform3f(curS->getUniform("MatDif"), 0.03, 0.35, 0.55);
 				glUniform3f(curS->getUniform("MatSpec"), 0.01, 0.125, 0.325);
 				glUniform1f(curS->getUniform("MatShine"), 27.9);
@@ -467,7 +537,7 @@ public:
 
 	//set material with the glsl values:
 	void SetMaterialVal(shared_ptr<Program> curS, tinyobj:: material_t material) {
-		glUniform3f(curS->getUniform("MatAmb"), 0.003*material.ambient[0], 0.003*material.ambient[1], 0.003*material.ambient[2]);
+		glUniform3f(curS->getUniform("MatAmb"), 0.003*material.ambient[0], 0*material.ambient[1], 0.003*material.ambient[2]);
 		glUniform3f(curS->getUniform("MatDif"), 0.003*material.diffuse[0], 0.35*material.diffuse[1], 0.55*material.diffuse[2]);
 		glUniform3f(curS->getUniform("MatSpec"), 0.01*material.specular[0], 0.01*material.specular[1], 0.01*material.specular[2]);
 		glUniform1f(curS->getUniform("MatShine"), material.shininess);
@@ -489,7 +559,28 @@ public:
   		glUniformMatrix4fv(curS->getUniform("M"), 1, GL_FALSE, value_ptr(ctm));
   	}
 
-	void render() {
+	/* camera controls - do not change */
+	void SetView(shared_ptr<Program>  shader) {
+  		glm::mat4 Cam = glm::lookAt(g_eye, g_lookAt, vec3(0, 1, 0));
+		glm::mat4 Trans = glm::translate(glm::mat4(1.0f), glm::vec3(gTrans - 4, gTrans2 - 3, -20 + gMove));
+    	Cam = Trans * Cam;
+  		glUniformMatrix4fv(shader->getUniform("V"), 1, GL_FALSE, value_ptr(Cam));
+	}
+
+	void updateUsingCameraPath(float frametime)  {
+
+   	  	if(goCamera) {
+			if(!splinepath[0].isDone()){
+				splinepath[0].update(frametime);
+				g_eye = splinepath[0].getPosition();
+			} else {
+				g_eye = initialEye;
+				g_lookAt = initialLookAt;
+			}
+    	}
+   	}
+
+	void render(float frametime) {
 		// Get current frame buffer size.
 		int width, height;
 		glfwGetFramebufferSize(windowManager->getHandle(), &width, &height);
@@ -506,9 +597,12 @@ public:
 		auto View = make_shared<MatrixStack>();
 		auto Model = make_shared<MatrixStack>();
 
+		//update the camera position
+		updateUsingCameraPath(frametime);
+
 		// Apply perspective projection.
 		Projection->pushMatrix();
-		Projection->perspective(45.0f, aspect, 0.01f, 100.0f);
+		Projection->perspective(45.0f, aspect, 0.01f, 1000.0f);
 
 		// View is global translation along negative z for now
 		View->pushMatrix();
@@ -519,9 +613,11 @@ public:
 		// Draw base Hierarchical person
 		prog->bind();
 		glUniformMatrix4fv(prog->getUniform("P"), 1, GL_FALSE, value_ptr(Projection->topMatrix()));
-		glUniformMatrix4fv(prog->getUniform("V"), 1, GL_FALSE, value_ptr(View->topMatrix()));
+		// glUniformMatrix4fv(prog->getUniform("V"), 1, GL_FALSE, value_ptr(View->topMatrix()));
+		SetView(prog);
+
 		glUniform3f(prog->getUniform("lightPos"), 7.0 + gLight, 5.0, -1.5);
-		glUniform1f(prog->getUniform("lightIntensity"), 0.856);
+		glUniform1f(prog->getUniform("lightIntensity"), 1.3);
 		glUniform3f(prog->getUniform("lightPos2"), 50.0, 10.0, -2);
 
 		//for lightning effect
@@ -529,7 +625,7 @@ public:
 			lightCounter = 5;
 		}
 		if(lightCounter > 0){
-			glUniform1f(prog->getUniform("lightIntensity2"), 1.3);
+			glUniform1f(prog->getUniform("lightIntensity2"), 2.3);
 			lightCounter--;
 		}
 		else{
@@ -570,17 +666,17 @@ public:
 			Model->popMatrix();
 		}
 
-		//mountain
-		for(int i=0; i<mountains.size();i++) {
-			Model->pushMatrix();
-				Model->translate(vec3(-30, 5, 30));
-				Model->scale(vec3(0.5, 0.5, 0.5));
-				Model->rotate((3.14), vec3(0, 1, 0));
-				SetMaterial(prog, 2);
-				setModel(prog, Model);
-				mountains[i]->draw(prog);
-			Model->popMatrix();
-		}
+		// //mountain
+		// for(int i=0; i<mountains.size();i++) {
+		// 	Model->pushMatrix();
+		// 		Model->translate(vec3(-30, 5, 30));
+		// 		Model->scale(vec3(0.5, 0.5, 0.5));
+		// 		Model->rotate((3.14), vec3(0, 1, 0));
+		// 		SetMaterial(prog, 2);
+		// 		setModel(prog, Model);
+		// 		mountains[i]->draw(prog);
+		// 	Model->popMatrix();
+		// }
 
 		//bricks
 		Model->pushMatrix();
@@ -658,7 +754,9 @@ public:
 		if(switchShader){
 			texProg->bind();
 			glUniformMatrix4fv(texProg->getUniform("P"), 1, GL_FALSE, value_ptr(Projection->topMatrix()));
-			glUniformMatrix4fv(texProg->getUniform("V"), 1, GL_FALSE, value_ptr(View->topMatrix()));
+			// glUniformMatrix4fv(texProg->getUniform("V"), 1, GL_FALSE, value_ptr(View->topMatrix()));
+		SetView(texProg);
+
 
 			// //bricks
 			Model->pushMatrix();
@@ -672,9 +770,36 @@ public:
 			texProg->unbind();
 		}
 
+		// Draw the skybox
+		texProg->bind();
+		glUniformMatrix4fv(texProg->getUniform("P"), 1, GL_FALSE, value_ptr(Projection->topMatrix()));
+		// glUniformMatrix4fv(texProg->getUniform("V"), 1, GL_FALSE, value_ptr(View->topMatrix()));
+		SetView(texProg);
+
+			//skybox
+		for(int i=0; i<cubes.size();i++) {
+			Model->pushMatrix();
+				Model->loadIdentity();
+				Model->translate(vec3(0, 55, 0));
+				Model->scale(vec3(90, 60, 155));
+				if(lightCounter > 0){
+					skyBoxTexture2->bind(texProg->getUniform("Texture0"));
+				}
+				else{
+					skyBoxTexture->bind(texProg->getUniform("Texture0"));
+				}
+				setModel(texProg, Model);
+				cubes[i]->draw(texProg);
+			Model->popMatrix();
+		}
+
+		texProg->unbind();
+
 		solidColorProg->bind();
 		glUniformMatrix4fv(solidColorProg->getUniform("P"), 1, GL_FALSE, value_ptr(Projection->topMatrix()));
-		glUniformMatrix4fv(solidColorProg->getUniform("V"), 1, GL_FALSE, value_ptr(View->topMatrix()));
+		// glUniformMatrix4fv(solidColorProg->getUniform("V"), 1, GL_FALSE, value_ptr(View->topMatrix()));
+		SetView(solidColorProg);
+
 
 		GLint solidColorUni = solidColorProg->getUniform("solidColor");
 		glUniform3f(solidColorUni, 0, 0, 0);
@@ -914,11 +1039,30 @@ int main(int argc, char *argv[])
 	application->init(resourceDir);
 	application->initGeom(resourceDir);
 
+	auto lastTime = chrono::high_resolution_clock::now();
+
 	// Loop until the user closes the window.
 	while (! glfwWindowShouldClose(windowManager->getHandle()))
 	{
+
+		// save current time for next frame
+		auto nextLastTime = chrono::high_resolution_clock::now();
+
+		// get time since last frame
+		float deltaTime =
+			chrono::duration_cast<std::chrono::microseconds>(
+				chrono::high_resolution_clock::now() - lastTime)
+				.count();
+		// convert microseconds (weird) to seconds (less weird)
+		deltaTime *= 0.000001;
+
+		// reset lastTime so that we can calculate the deltaTime
+		// on the next frame
+		lastTime = nextLastTime;
+
+
 		// Render scene.
-		application->render();
+		application->render(deltaTime);
 
 		// Swap front and back buffers.
 		glfwSwapBuffers(windowManager->getHandle());
