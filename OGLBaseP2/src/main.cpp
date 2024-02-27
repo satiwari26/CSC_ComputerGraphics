@@ -576,6 +576,7 @@ public:
 			} else {
 				g_eye = initialEye;
 				g_lookAt = initialLookAt;
+				goCamera = false;
 			}
     	}
    	}
@@ -613,9 +614,12 @@ public:
 		// Draw base Hierarchical person
 		prog->bind();
 		glUniformMatrix4fv(prog->getUniform("P"), 1, GL_FALSE, value_ptr(Projection->topMatrix()));
-		// glUniformMatrix4fv(prog->getUniform("V"), 1, GL_FALSE, value_ptr(View->topMatrix()));
-		SetView(prog);
-
+		if(!goCamera){
+			glUniformMatrix4fv(prog->getUniform("V"), 1, GL_FALSE, value_ptr(View->topMatrix()));
+			}
+			else{
+				SetView(prog);
+			}
 		glUniform3f(prog->getUniform("lightPos"), 7.0 + gLight, 5.0, -1.5);
 		glUniform1f(prog->getUniform("lightIntensity"), 1.3);
 		glUniform3f(prog->getUniform("lightPos2"), 50.0, 10.0, -2);
@@ -754,9 +758,12 @@ public:
 		if(switchShader){
 			texProg->bind();
 			glUniformMatrix4fv(texProg->getUniform("P"), 1, GL_FALSE, value_ptr(Projection->topMatrix()));
-			// glUniformMatrix4fv(texProg->getUniform("V"), 1, GL_FALSE, value_ptr(View->topMatrix()));
-		SetView(texProg);
-
+			if(!goCamera){
+				glUniformMatrix4fv(texProg->getUniform("V"), 1, GL_FALSE, value_ptr(View->topMatrix()));
+			}
+			else{
+				SetView(texProg);
+			}
 
 			// //bricks
 			Model->pushMatrix();
@@ -773,9 +780,12 @@ public:
 		// Draw the skybox
 		texProg->bind();
 		glUniformMatrix4fv(texProg->getUniform("P"), 1, GL_FALSE, value_ptr(Projection->topMatrix()));
-		// glUniformMatrix4fv(texProg->getUniform("V"), 1, GL_FALSE, value_ptr(View->topMatrix()));
-		SetView(texProg);
-
+		if(!goCamera){
+			glUniformMatrix4fv(texProg->getUniform("V"), 1, GL_FALSE, value_ptr(View->topMatrix()));
+			}
+			else{
+				SetView(texProg);
+			}
 			//skybox
 		for(int i=0; i<cubes.size();i++) {
 			Model->pushMatrix();
@@ -797,9 +807,12 @@ public:
 
 		solidColorProg->bind();
 		glUniformMatrix4fv(solidColorProg->getUniform("P"), 1, GL_FALSE, value_ptr(Projection->topMatrix()));
-		// glUniformMatrix4fv(solidColorProg->getUniform("V"), 1, GL_FALSE, value_ptr(View->topMatrix()));
-		SetView(solidColorProg);
-
+		if(!goCamera){
+			glUniformMatrix4fv(solidColorProg->getUniform("V"), 1, GL_FALSE, value_ptr(View->topMatrix()));
+			}
+			else{
+				SetView(solidColorProg);
+			}
 
 		GLint solidColorUni = solidColorProg->getUniform("solidColor");
 		glUniform3f(solidColorUni, 0, 0, 0);
