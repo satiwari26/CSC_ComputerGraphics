@@ -35,6 +35,8 @@ public:
 
 	virtual void mouseCallback(GLFWwindow *window, int button, int action, int mods) = 0;
 
+	virtual void cursorPosCallback(GLFWwindow* window, double xpos, double ypos) = 0;
+
 	virtual void resizeCallback(GLFWwindow *window, int in_width, int in_height) = 0;
 
 };
@@ -79,7 +81,7 @@ private:
 	static void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods);
 	static void mouse_callback(GLFWwindow *window, int button, int action, int mods);
 	static void resize_callback(GLFWwindow *window, int in_width, int in_height);
-
+	static void cursor_PosCallback(GLFWwindow* window, double xpos, double ypos);
 };
 
 #endif

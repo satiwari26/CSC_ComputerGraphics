@@ -123,11 +123,17 @@ public:
 	double g_phi, g_theta;
 	vec3 view = vec3(0, 0, 1);
 	vec3 strafe = vec3(1, 0, 0);
-	vec3 g_eye = vec3(0, 1, 0);
-	vec3 g_lookAt = vec3(0, 1, -4);
+	vec3 g_eye = vec3(10.0, 2.2, 25);
+	vec3 g_lookAt = vec3(7.0, 2.2, -1);
+	vec3 gaze = g_lookAt - g_eye;
+	vec3 g_up = vec3(0, 1, 0);
 
-	vec3 initialEye = vec3(0, 1, 0);
-	vec3 initialLookAt = vec3(0, 1, -4);
+	// These variables store the cursor position in the previous frame
+	double lastX = 0.0, lastY = 0.0;
+	float yaw = 0.0f, pitch = 0.0f;
+
+	vec3 initialEye = vec3(10.0, 2.2, 25);
+	vec3 initialLookAt = vec3(7.0, 2.2, -1);
 
 	Spline splinepath[2];
 	bool goCamera = false;
@@ -138,12 +144,33 @@ public:
 		{
 			glfwSetWindowShouldClose(window, GL_TRUE);
 		}
-		if (key == GLFW_KEY_A && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
-			gTrans += 0.2;
+
+		float cameraSpeed = 0.5f;
+
+    // w, u, v vectors
+    glm::vec3 w = glm::normalize(g_eye - g_lookAt);
+    glm::vec3 u = glm::normalize(glm::cross(vec3(0, 1, 0), w));
+    glm::vec3 v = glm::cross(w, u);
+
+		if (action == GLFW_PRESS || action == GLFW_REPEAT) {
+			if (key == GLFW_KEY_W) {
+				g_eye -= cameraSpeed * w;
+				g_lookAt -= cameraSpeed * w;
+			}
+			if (key == GLFW_KEY_S) {
+				g_eye += cameraSpeed * w;
+				g_lookAt += cameraSpeed * w;
+			}
+			if (key == GLFW_KEY_A) {
+				g_eye -= cameraSpeed * u;
+				g_lookAt -= cameraSpeed * u;
+			}
+			if (key == GLFW_KEY_D) {
+				g_eye += cameraSpeed * u;
+				g_lookAt += cameraSpeed * u;
+			}
 		}
-		if (key == GLFW_KEY_D && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
-			gTrans -= 0.2;
-		}
+
 		if (key == GLFW_KEY_Q && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
 			gLight -= 0.2;
 		}
@@ -165,12 +192,12 @@ public:
 		if (key == GLFW_KEY_Z && action == GLFW_RELEASE) {
 			glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
 		}
-		if (key == GLFW_KEY_W && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
-			gMove += 0.2;
-		}
-		if (key == GLFW_KEY_S && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
-			gMove -= 0.2;
-		}
+		// if (key == GLFW_KEY_W && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
+		// 	gMove += 0.2;
+		// }
+		// if (key == GLFW_KEY_S && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
+		// 	gMove -= 0.2;
+		// }
 		if (key == GLFW_KEY_M && (action == GLFW_PRESS)) {
 			switchShader = !switchShader;
 		}
@@ -182,18 +209,55 @@ public:
 	void mouseCallback(GLFWwindow *window, int button, int action, int mods)
 	{
 		double posX, posY;
-
 		if (action == GLFW_PRESS)
 		{
 			 glfwGetCursorPos(window, &posX, &posY);
 			 cout << "Pos X " << posX <<  " Pos Y " << posY << endl;
 		}
-		
+	}
+
+	void cursorPosCallback(GLFWwindow* window, double xpos, double ypos)
+	{
+		// delta x and y position
+		double xoffset = xpos - lastX;
+		double yoffset = lastY - ypos; 
+
+		// getting current cursor position
+		lastX = xpos;
+		lastY = ypos;
+
+		// mouse sensitivity
+		float sensitivity = 0.2f;
+
+		yaw   += xoffset * sensitivity;
+		pitch += yoffset * sensitivity;
+
+		// screen flipping issue 
+		if (pitch > 89.0f)
+			pitch = 89.0f;
+		if (pitch < -89.0f)
+			pitch = -89.0f;
+
+		// directional vector
+		glm::vec3 direction;
+		direction.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
+		direction.y = sin(glm::radians(pitch));
+		direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+		glm::vec3 w = glm::normalize(direction);
+
+		// u and v vectors
+		glm::vec3 u = glm::normalize(glm::cross(vec3(0, 1, 0), w));
+		glm::vec3 v = glm::cross(w, u);
+
+		// Calculate the new lookAt point
+		g_lookAt = g_eye + w;
 	}
 
 	void scrollCallback(GLFWwindow* window, double deltaX, double deltaY) {
-   		cout << "xDel + yDel " << deltaX << " " << deltaY << endl;
-   		//fill in for game camera
+   		// cout << "xDel + yDel " << deltaX << " " << deltaY << endl;
+   		// //fill in for game camera
+
+		
 	}
 
 	void resizeCallback(GLFWwindow *window, int width, int height)
@@ -283,11 +347,11 @@ public:
     //    splinepath[1] = Spline(glm::vec3(2,0,5), glm::vec3(3,-2,5), glm::vec3(-0.25, 0.25, 5), glm::vec3(0,0,5), 5);
 
 		float bx = 7.0;
-		float by = 2.2;
+		float by = 6.2;
 		float bz = -1.0;
 
 		// Move towards Batman
-		splinepath[0] = Spline(glm::vec3(-3,0,5), glm::vec3(1,3,20), glm::vec3(bx + 7, by+4, bz -30), glm::vec3(bx-3, by, bz + 5), 15);
+		splinepath[0] = Spline(glm::vec3(-2,0,7), glm::vec3(1,5,20), glm::vec3(bx + 7, by+11, bz -30), glm::vec3(bx-3, by, bz + 20), 15);
 	}
 
 	void initGeom(const std::string& resourceDirectory)
@@ -559,10 +623,19 @@ public:
   		glUniformMatrix4fv(curS->getUniform("M"), 1, GL_FALSE, value_ptr(ctm));
   	}
 
-	/* camera controls - do not change */
+	/* camera controls for animation transitions */
 	void SetView(shared_ptr<Program>  shader) {
+		g_lookAt = vec3(7.0, 2.2, -1);
   		glm::mat4 Cam = glm::lookAt(g_eye, g_lookAt, vec3(0, 1, 0));
-		glm::mat4 Trans = glm::translate(glm::mat4(1.0f), glm::vec3(gTrans - 4, gTrans2 - 3, -20 + gMove));
+		glm::mat4 Trans = glm::translate(glm::mat4(1.0f), glm::vec3(0,0,0));
+    	Cam = Trans * Cam;
+  		glUniformMatrix4fv(shader->getUniform("V"), 1, GL_FALSE, value_ptr(Cam));
+	}
+
+   	/* camera controls - do not change */
+	void SetView2(shared_ptr<Program>  shader) {
+  		glm::mat4 Cam = glm::lookAt(g_eye, g_lookAt, vec3(0, 1, 0));
+		glm::mat4 Trans = glm::translate(glm::mat4(1.0f), glm::vec3(0,0,0));
     	Cam = Trans * Cam;
   		glUniformMatrix4fv(shader->getUniform("V"), 1, GL_FALSE, value_ptr(Cam));
 	}
@@ -615,7 +688,8 @@ public:
 		prog->bind();
 		glUniformMatrix4fv(prog->getUniform("P"), 1, GL_FALSE, value_ptr(Projection->topMatrix()));
 		if(!goCamera){
-			glUniformMatrix4fv(prog->getUniform("V"), 1, GL_FALSE, value_ptr(View->topMatrix()));
+			// glUniformMatrix4fv(prog->getUniform("V"), 1, GL_FALSE, value_ptr(View->topMatrix()));
+			SetView2(prog);
 			}
 			else{
 				SetView(prog);
@@ -759,7 +833,8 @@ public:
 			texProg->bind();
 			glUniformMatrix4fv(texProg->getUniform("P"), 1, GL_FALSE, value_ptr(Projection->topMatrix()));
 			if(!goCamera){
-				glUniformMatrix4fv(texProg->getUniform("V"), 1, GL_FALSE, value_ptr(View->topMatrix()));
+				// glUniformMatrix4fv(texProg->getUniform("V"), 1, GL_FALSE, value_ptr(View->topMatrix()));
+				SetView2(texProg);
 			}
 			else{
 				SetView(texProg);
@@ -781,7 +856,8 @@ public:
 		texProg->bind();
 		glUniformMatrix4fv(texProg->getUniform("P"), 1, GL_FALSE, value_ptr(Projection->topMatrix()));
 		if(!goCamera){
-			glUniformMatrix4fv(texProg->getUniform("V"), 1, GL_FALSE, value_ptr(View->topMatrix()));
+			// glUniformMatrix4fv(texProg->getUniform("V"), 1, GL_FALSE, value_ptr(View->topMatrix()));
+			SetView2(texProg);
 			}
 			else{
 				SetView(texProg);
@@ -808,7 +884,8 @@ public:
 		solidColorProg->bind();
 		glUniformMatrix4fv(solidColorProg->getUniform("P"), 1, GL_FALSE, value_ptr(Projection->topMatrix()));
 		if(!goCamera){
-			glUniformMatrix4fv(solidColorProg->getUniform("V"), 1, GL_FALSE, value_ptr(View->topMatrix()));
+			// glUniformMatrix4fv(solidColorProg->getUniform("V"), 1, GL_FALSE, value_ptr(View->topMatrix()));
+			SetView2(solidColorProg);
 			}
 			else{
 				SetView(solidColorProg);
