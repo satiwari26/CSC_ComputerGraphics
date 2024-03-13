@@ -59,6 +59,11 @@
         "xtr1common": "cpp",
         "xtree": "cpp",
         "xutility": "cpp",
-        "chrono": "cpp"
+        "chrono": "cpp",
+        "algorithm": "cpp",
+        "forward_list": "cpp",
+        "iomanip": "cpp",
+        "optional": "cpp",
+        "ratio": "cpp"
     }
 }

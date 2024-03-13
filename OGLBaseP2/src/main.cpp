@@ -16,6 +16,7 @@
 #include "Texture.h"
 #include "Bezier.h"
 #include "Spline.h"
+#include "particleSys.h"
 
 #define TINYOBJLOADER_IMPLEMENTATION
 #include <tiny_obj_loader/tiny_obj_loader.h>
@@ -37,6 +38,15 @@ public:
 
 	// Our shader program
 	std::shared_ptr<Program> prog;
+
+	// Our shader program for particles
+	std::shared_ptr<Program> partProg;
+
+	//the partricle system
+	particleSys *thePartSystem;
+
+	// OpenGL handle to texture data used in particle
+	shared_ptr<Texture> texture;
 
 	// Our shader program
 	std::shared_ptr<Program> solidColorProg;
@@ -267,12 +277,40 @@ public:
 
 	void init(const std::string& resourceDirectory)
 	{
+		int width, height;
+		glfwGetFramebufferSize(windowManager->getHandle(), &width, &height);
 		GLSL::checkVersion();
 
 		// Set background color.
 		glClearColor(.12f, .34f, .56f, 1.0f);
+
 		// Enable z-buffer test.
-		glEnable(GL_DEPTH_TEST);
+		CHECKED_GL_CALL(glEnable(GL_DEPTH_TEST));
+		CHECKED_GL_CALL(glEnable(GL_BLEND));
+		CHECKED_GL_CALL(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
+		CHECKED_GL_CALL(glPointSize(25.0f));
+
+		// Initialize the GLSL program.
+		partProg = make_shared<Program>();
+		partProg->setVerbose(true);
+		partProg->setShaderNames(
+			resourceDirectory + "/lab10_vert.glsl",
+			resourceDirectory + "/lab10_frag.glsl");
+		if (! partProg->init())
+		{
+			std::cerr << "One or more shaders failed to compile... exiting!" << std::endl;
+			exit(1);
+		}
+		partProg->addUniform("P");
+		partProg->addUniform("M");
+		partProg->addUniform("V");
+		partProg->addUniform("pColor");
+		partProg->addUniform("alphaTexture");
+		partProg->addAttribute("vertPos");
+
+		thePartSystem = new particleSys(vec3(7.0, 100, -1));
+		thePartSystem->gpuSetup();
+
 
 		g_theta = -PI/2.0;
 
@@ -341,10 +379,6 @@ public:
 		skyBoxTexture2->init();
 		skyBoxTexture2->setUnit(0);
 		skyBoxTexture2->setWrapModes(GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE);
-
-		// init splines up and down
-    //    splinepath[0] = Spline(glm::vec3(-6,0,5), glm::vec3(-1,-5,5), glm::vec3(1, 5, 5), glm::vec3(2,0,5), 5);
-    //    splinepath[1] = Spline(glm::vec3(2,0,5), glm::vec3(3,-2,5), glm::vec3(-0.25, 0.25, 5), glm::vec3(0,0,5), 5);
 
 		float bx = 7.0;
 		float by = 6.2;
@@ -459,23 +493,6 @@ public:
 			}
 		}
 
-		//mountain
-		// vector<tinyobj::shape_t> TOshapes8;
- 		// rc = tinyobj::LoadObj(TOshapes8, objMaterials, errStr, (resourceDirectory + "/mountain.obj").c_str());
-
-		// for(int i=0;i<TOshapes8.size();i++){
-		// 	if (!rc) {
-		// 		cerr << errStr << endl;
-		// 	} else {
-		// 		//for now all our shapes will not have textures - change in later labs
-		// 		mountain = make_shared<Shape>(false);
-		// 		mountain->createShape(TOshapes8[i]);
-		// 		mountain->measure();
-		// 		mountain->init();
-		// 		mountains.push_back(mountain);
-		// 	}
-		// }
-
 		//city
 		// vector<tinyobj::shape_t> TOshapes9;
  		rc = tinyobj::LoadObj(TOshapes9, objMaterials1, errStr, (resourceDirectory + "/city.obj").c_str(), (resourceDirectory + "/").c_str());
@@ -560,6 +577,16 @@ public:
 				bricks1.push_back(brick1);
 			}
 		}
+	}
+
+	// Code to load in the texture
+	void initTex(const std::string& resourceDirectory)
+	{
+		texture = make_shared<Texture>();
+		texture->setFilename(resourceDirectory + "/line.png");
+		texture->init();
+		texture->setUnit(0);
+		texture->setWrapModes(GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE);
 	}
 
 
@@ -660,6 +687,8 @@ public:
 		glfwGetFramebufferSize(windowManager->getHandle(), &width, &height);
 		glViewport(0, 0, width, height);
 
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
 		// Clear framebuffer.
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -671,6 +700,21 @@ public:
 		auto View = make_shared<MatrixStack>();
 		auto Model = make_shared<MatrixStack>();
 
+		// Create the matrix stacks for particles
+		auto V = make_shared<MatrixStack>();
+
+		// View for particles
+		V->pushMatrix();
+		// Reset the top matrix to the identity matrix
+		V->loadIdentity();
+		// Create a view matrix based on the camera's position and the point it's looking at
+		glm::mat4 Cam = glm::lookAt(g_eye, g_lookAt, vec3(0, 1, 0));
+		// Translate and rotate the view matrix
+		Cam = glm::translate(Cam, vec3(0, 0, -5));
+		Cam = glm::rotate(Cam, sTheta, vec3(0, 1, 0));
+		// Multiply the top matrix with the Cam matrix
+		V->multMatrix(Cam);
+
 		//update the camera position
 		updateUsingCameraPath(frametime);
 
@@ -678,13 +722,12 @@ public:
 		Projection->pushMatrix();
 		Projection->perspective(45.0f, aspect, 0.01f, 1000.0f);
 
-		// View is global translation along negative z for now
+		// View for world
 		View->pushMatrix();
 			View->loadIdentity();
 			View->rotate(sTheta, vec3(0, -0.5, 0));
 			View->translate(vec3(gTrans - 4,gTrans2 - 3, -20 + gMove));
 
-		// Draw base Hierarchical person
 		prog->bind();
 		glUniformMatrix4fv(prog->getUniform("P"), 1, GL_FALSE, value_ptr(Projection->topMatrix()));
 		if(!goCamera){
@@ -700,7 +743,7 @@ public:
 
 		//for lightning effect
 		if(rand()%78 == 0){
-			lightCounter = 5;
+			lightCounter = 14;
 		}
 		if(lightCounter > 0){
 			glUniform1f(prog->getUniform("lightIntensity2"), 2.3);
@@ -744,37 +787,37 @@ public:
 			Model->popMatrix();
 		}
 
-		// //mountain
-		// for(int i=0; i<mountains.size();i++) {
-		// 	Model->pushMatrix();
-		// 		Model->translate(vec3(-30, 5, 30));
-		// 		Model->scale(vec3(0.5, 0.5, 0.5));
-		// 		Model->rotate((3.14), vec3(0, 1, 0));
-		// 		SetMaterial(prog, 2);
-		// 		setModel(prog, Model);
-		// 		mountains[i]->draw(prog);
-		// 	Model->popMatrix();
-		// }
-
-		//bricks
+		//brick behind batman
 		Model->pushMatrix();
-			Model->translate(vec3(7, -0.8, 5));
-			Model->scale(vec3(0.005, 0.005, 0.005));
-			Model->rotate(0.5*(3.14), vec3(0, 1, 0));
+			Model->translate(vec3(6.2, -1.5, -3));
+			Model->scale(vec3(0.0065, 0.005, 0.005));
+			Model->rotate(0.5*(3.14), vec3(-1, 0, 0));
 			SetMaterial(prog, 2);
 			setModel(prog, Model);
 			bricks[0]->draw(prog);
 		Model->popMatrix();
 
-		Model->pushMatrix();
-			Model->translate(vec3(7.3, -0.7, 4));
-			Model->scale(vec3(0.005, 0.005, 0.005));
-			// Model->rotate(0.5*(3.14), vec3(0, 1, 0));
-			Model->rotate(0.25*(3.14), vec3(0, 0, 1));
-			SetMaterial(prog, 2);
-			setModel(prog, Model);
-			bricks[0]->draw(prog);
-		Model->popMatrix();
+		// bricks
+		if(lightCounter <= 0){
+			Model->pushMatrix();
+				Model->translate(vec3(7, -0.8, 5));
+				Model->scale(vec3(0.005, 0.005, 0.005));
+				Model->rotate(0.5*(3.14), vec3(0, 1, 0));
+				SetMaterial(prog, 2);
+				setModel(prog, Model);
+				bricks[0]->draw(prog);
+			Model->popMatrix();
+
+			Model->pushMatrix();
+				Model->translate(vec3(7.3, -0.7, 4));
+				Model->scale(vec3(0.005, 0.005, 0.005));
+				// Model->rotate(0.5*(3.14), vec3(0, 1, 0));
+				Model->rotate(0.25*(3.14), vec3(0, 0, 1));
+				SetMaterial(prog, 2);
+				setModel(prog, Model);
+				bricks[0]->draw(prog);
+			Model->popMatrix();
+		}
 
 
 		//bricks
@@ -790,7 +833,7 @@ public:
 		if(!switchShader){
 			//bricks
 			Model->pushMatrix();
-				Model->translate(vec3(13, -1.4, 5));
+				Model->translate(vec3(13, -1.5, 5));
 				Model->scale(vec3(0.005, 0.005, 0.005));
 				Model->rotate(0.5*(3.14), vec3(-1, 0, 0));
 				SetMaterial(prog, 2);
@@ -840,7 +883,7 @@ public:
 				SetView(texProg);
 			}
 
-			// //bricks
+			 //bricks
 			Model->pushMatrix();
 				Model->translate(vec3(13, -1.4, 5));
 				Model->scale(vec3(0.005, 0.005, 0.005));
@@ -893,6 +936,91 @@ public:
 
 		GLint solidColorUni = solidColorProg->getUniform("solidColor");
 		glUniform3f(solidColorUni, 0, 0, 0);
+
+		if(lightCounter > 0){
+			//batman shadowcast on lightining
+			for(int i=14; i<16;i++) {
+				Model->pushMatrix();
+					Model->rotate((3.14), vec3(0, 0, 1));
+					Model->rotate((3.14/2), vec3(-1, 0, 0));
+					Model->rotate((3.14), vec3(0, 1, 0));
+					Model->translate(vec3(7.4, 0.4, -0.83));
+					Model->scale(vec3(0.7, 2.7, 0.1));
+					Model->rotate((3.14/8), vec3(0, 0, 1));
+					Model->rotate((3.14/2), vec3(-1, 0, 0));
+					Model->rotate((3.14/8), vec3(0, 0, 1));
+					Model->rotate((3.14), vec3(1, 0, 0));
+
+					// SetMaterial(prog, 2);
+					setModel(solidColorProg, Model);
+					batmans[i]->draw(solidColorProg);
+				Model->popMatrix();
+			}
+			Model->pushMatrix();
+				Model->translate(vec3(6.2, -1.0, -5.7));
+				Model->scale(vec3(0.0065, 0.001, 0.027));
+				setModel(solidColorProg, Model);
+				bricks[0]->draw(solidColorProg);
+			Model->popMatrix();
+
+
+			//car shadow on lightining
+			for(int i=0; i<cars.size();i++) {
+				Model->pushMatrix();
+					Model->translate(vec3(16.8, -1, -1.6));
+					Model->scale(vec3(0.55, 0.01, 0.65));
+					Model->rotate((0.8), vec3(0, 1, 0));
+					setModel(solidColorProg, Model);
+					cars[i]->draw(solidColorProg);
+				Model->popMatrix();
+			}
+
+			//other bricks shadow:
+			Model->pushMatrix();
+				Model->translate(vec3(13, -1.0, 3.3));
+				Model->scale(vec3(0.005, 0.001, 0.015));
+				setModel(solidColorProg, Model);
+				bricks[0]->draw(solidColorProg);
+			Model->popMatrix();
+
+			// bricks
+			Model->pushMatrix();
+				Model->translate(vec3(7, -0.8, 5));
+				Model->scale(vec3(0.005, 0.005, 0.005));
+				Model->rotate(0.5*(3.14), vec3(0, 1, 0));
+				setModel(solidColorProg, Model);
+				bricks[0]->draw(solidColorProg);
+			Model->popMatrix();
+
+			Model->pushMatrix();
+				Model->translate(vec3(7.3, -0.7, 4));
+				Model->scale(vec3(0.005, 0.005, 0.005));
+				// Model->rotate(0.5*(3.14), vec3(0, 1, 0));
+				Model->rotate(0.25*(3.14), vec3(0, 0, 1));
+				setModel(solidColorProg, Model);
+				bricks[0]->draw(solidColorProg);
+			Model->popMatrix();
+
+			//other bricks
+			Model->pushMatrix();
+				Model->translate(vec3(16.5, -0.97, 11));
+				Model->scale(vec3(0.005, 0.0001, 0.024));
+				Model->rotate(0.5*(3.14), vec3(0, 0, -1));
+				Model->rotate(0.5*(3.14), vec3(-1, 0, 0));
+				setModel(solidColorProg, Model);
+				bricks[0]->draw(solidColorProg);
+			Model->popMatrix();
+
+			//bricks
+			Model->pushMatrix();
+				Model->translate(vec3(14.3, -0.97, 4.5));
+				Model->scale(vec3(0.01, 0.0001, 0.013));
+				Model->rotate(0.25*(3.14), vec3(0, 1, 0));
+				setModel(solidColorProg, Model);
+				bricks[0]->draw(solidColorProg);
+			Model->popMatrix();
+
+		}
 
 		//batarang
 		for(int i=0; i<m4a1s.size();i++) {
@@ -1096,6 +1224,32 @@ public:
 
 		solidColorProg->unbind();
 
+		// camera rotate
+		thePartSystem->setCamera(V->topMatrix());
+
+		// Draw
+		partProg->bind();
+		Model->pushMatrix();
+		Model->loadIdentity();
+		texture->bind(partProg->getUniform("alphaTexture"));
+		CHECKED_GL_CALL(glUniformMatrix4fv(partProg->getUniform("P"), 1, GL_FALSE, value_ptr(Projection->topMatrix())));
+		CHECKED_GL_CALL(glUniformMatrix4fv(partProg->getUniform("V"), 1, GL_FALSE, value_ptr(V->topMatrix())));
+		CHECKED_GL_CALL(glUniformMatrix4fv(partProg->getUniform("M"), 1, GL_FALSE, value_ptr(Model->topMatrix())));
+		
+		// CHECKED_GL_CALL(glUniform3f(partProg->getUniform("pColor"), 0.9, 0.7, 0.7));
+
+		setModel(partProg, Model);
+		
+		thePartSystem->drawMe(partProg);
+		thePartSystem->drawMe(partProg);
+		thePartSystem->drawMe(partProg);
+		thePartSystem->update();
+		Model->popMatrix();
+		partProg->unbind();
+
+		// Pop matrix stacks.
+		V->popMatrix();
+
 		// Pop matrix stacks.
 		Projection->popMatrix();
 		View->popMatrix();
@@ -1119,7 +1273,7 @@ int main(int argc, char *argv[])
 	// and GL context, etc.
 
 	WindowManager *windowManager = new WindowManager();
-	windowManager->init(640, 480);
+	windowManager->init(720, 480);
 	windowManager->setEventCallbacks(application);
 	application->windowManager = windowManager;
 
@@ -1127,6 +1281,7 @@ int main(int argc, char *argv[])
 	// may need to initialize or set up different data and state
 
 	application->init(resourceDir);
+	application->initTex(resourceDir);
 	application->initGeom(resourceDir);
 
 	auto lastTime = chrono::high_resolution_clock::now();
