@@ -43,7 +43,7 @@ public:
 	particleSys(vec3 source);
 	void drawMe(std::shared_ptr<Program> prog);
 	void gpuSetup();
-	void update();
+	void update(bool closerParticles);
 	void reSet();
 	void setCamera(mat4 inC) {theCamera = inC;}
 };

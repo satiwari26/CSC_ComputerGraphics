@@ -37,22 +37,28 @@ Particle::~Particle()
 void Particle::load(vec3 start)
 {
 	// Random initialization
-	rebirth(0.0f, start);
+	rebirth(0.0f, start, false);
 }
 
 /* all particles born at the origin */
-void Particle::rebirth(float t, vec3 start)
+void Particle::rebirth(float t, vec3 start, bool closerParticles)
 {
 	charge = randFloat(0.0f, 1.0f) < 0.5 ? -1.0f : 1.0f;	
 	m = 1.0f;
   	d = randFloat(0.0f, 0.02f);
 	// x = start;
 	// Assign a random start position
-    x.x = start.x + randFloat(-70.0f, 70.0f);
+    x.x = start.x + randFloat(-50.0f, 80.0f);
     x.y = start.y + randFloat(0.0f, 0.0f);
     x.z = start.z + randFloat(-100.0f, 100.0f);
 
-	v.x = randFloat(2.27f, 4.3f);
+	if(closerParticles) {
+		x.x = start.x + randFloat(-40.0f, 40.0f);
+		x.y = start.y + randFloat(0.0f, 0.0f);
+		x.z = start.z + randFloat(-40.0f, 40.0f);
+	}
+
+	v.x = randFloat(-20.27f, -30.3f);
 	v.y = randFloat(-50.1f, -60.9f);
 	v.z = randFloat(-0.3f, 0.27f);
 	lifespan = randFloat(1.0f, 10.0f); 
@@ -64,10 +70,10 @@ void Particle::rebirth(float t, vec3 start)
 	color.a = 1.0f;
 }
 
-void Particle::update(float t, float h, const vec3 &g, const vec3 start)
+void Particle::update(float t, float h, const vec3 &g, const vec3 start, bool closerParticles)
 {
 	if(t > (tEnd)) {
-		rebirth(t, start);
+		rebirth(t, start, closerParticles);
 	}
 
 	//very simple update

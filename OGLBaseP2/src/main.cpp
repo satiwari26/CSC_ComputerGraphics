@@ -44,6 +44,7 @@ public:
 
 	//the partricle system
 	particleSys *thePartSystem;
+	particleSys *thePartSystem2;
 
 	// OpenGL handle to texture data used in particle
 	shared_ptr<Texture> texture;
@@ -87,6 +88,11 @@ public:
 	vector<shared_ptr<Shape>> batmans;
 	vector<tinyobj::shape_t> TOshapes6;
 	vector<tinyobj::material_t> objMaterials2;
+
+	//ground
+	shared_ptr<Shape> ground;
+	vector<tinyobj::shape_t> TOshapesGround;
+	shared_ptr<Texture> groundTexture;
 
 	//grass
 	shared_ptr<Shape> grass;
@@ -288,7 +294,7 @@ public:
 		CHECKED_GL_CALL(glEnable(GL_DEPTH_TEST));
 		CHECKED_GL_CALL(glEnable(GL_BLEND));
 		CHECKED_GL_CALL(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
-		CHECKED_GL_CALL(glPointSize(25.0f));
+		CHECKED_GL_CALL(glPointSize(50.0f));
 
 		// Initialize the GLSL program.
 		partProg = make_shared<Program>();
@@ -308,8 +314,10 @@ public:
 		partProg->addUniform("alphaTexture");
 		partProg->addAttribute("vertPos");
 
-		thePartSystem = new particleSys(vec3(7.0, 100, -1));
+		thePartSystem = new particleSys(vec3(7.0, 60, -1));
 		thePartSystem->gpuSetup();
+		thePartSystem2 = new particleSys(vec3(7.0, 60, -1));
+		thePartSystem2->gpuSetup();
 
 
 		g_theta = -PI/2.0;
@@ -361,7 +369,7 @@ public:
 
 		//read in a load the texture
 		texture0 = make_shared<Texture>();
-  		texture0->setFilename(resourceDirectory + "/grass1.jpg");
+  		texture0->setFilename(resourceDirectory + "/grass.jpg");
   		texture0->init();
   		texture0->setUnit(0);
   		texture0->setWrapModes(GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE);
@@ -379,6 +387,13 @@ public:
 		skyBoxTexture2->init();
 		skyBoxTexture2->setUnit(0);
 		skyBoxTexture2->setWrapModes(GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE);
+
+		//ground texture
+		groundTexture = make_shared<Texture>();
+		groundTexture->setFilename(resourceDirectory + "/boundingBox2.jpg");
+		groundTexture->init();
+		groundTexture->setUnit(0);
+		groundTexture->setWrapModes(GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE);
 
 		float bx = 7.0;
 		float by = 6.2;
@@ -476,6 +491,18 @@ public:
 			}
 		}
 
+		//ground
+ 		rc = tinyobj::LoadObj(TOshapesGround, objMaterials, errStr, (resourceDirectory + "/cube1.obj").c_str(), (resourceDirectory + "/").c_str());
+		if (!rc) {
+			cerr << errStr << endl;
+		} else {
+			//for now all our shapes will not have textures - change in later labs
+			ground = make_shared<Shape>(true);
+			ground->createShape(TOshapesGround[0]);
+			ground->measure();
+			ground->init();
+		}
+
 		//car
 		vector<tinyobj::shape_t> TOshapes7;
  		rc = tinyobj::LoadObj(TOshapes7, objMaterials, errStr, (resourceDirectory + "/car.obj").c_str());
@@ -511,7 +538,7 @@ public:
 		}
 
 		vector<tinyobj::shape_t> TOshapes15;
-		rc = tinyobj::LoadObj(TOshapes15, objMaterials, errStr, (resourceDirectory + "/cube1.obj").c_str());
+		rc = tinyobj::LoadObj(TOshapes15, objMaterials, errStr, (resourceDirectory + "/sphereWTex.obj").c_str());
 		for(int i=0;i<TOshapes15.size();i++){
 			if (!rc) {
 				cerr << errStr << endl;
@@ -705,14 +732,10 @@ public:
 
 		// View for particles
 		V->pushMatrix();
-		// Reset the top matrix to the identity matrix
 		V->loadIdentity();
-		// Create a view matrix based on the camera's position and the point it's looking at
 		glm::mat4 Cam = glm::lookAt(g_eye, g_lookAt, vec3(0, 1, 0));
-		// Translate and rotate the view matrix
 		Cam = glm::translate(Cam, vec3(0, 0, -5));
 		Cam = glm::rotate(Cam, sTheta, vec3(0, 1, 0));
-		// Multiply the top matrix with the Cam matrix
 		V->multMatrix(Cam);
 
 		//update the camera position
@@ -910,7 +933,7 @@ public:
 			Model->pushMatrix();
 				Model->loadIdentity();
 				Model->translate(vec3(0, 55, 0));
-				Model->scale(vec3(90, 60, 155));
+				Model->scale(vec3(200, 100, 225));
 				if(lightCounter > 0){
 					skyBoxTexture2->bind(texProg->getUniform("Texture0"));
 				}
@@ -921,6 +944,18 @@ public:
 				cubes[i]->draw(texProg);
 			Model->popMatrix();
 		}
+
+			//ground
+			//disable the blending for non particles
+			CHECKED_GL_CALL(glDisable(GL_BLEND));
+			// Model->pushMatrix();
+			// 	Model->loadIdentity();
+			// 	Model->translate(vec3(0, 0, 0));
+			// 	Model->scale(vec3(50, 0.1, 50));
+			// 	groundTexture->bind(texProg->getUniform("Texture0"));
+			// 	setModel(texProg, Model);
+			// 	ground->draw(texProg);
+			// Model->popMatrix();
 
 		texProg->unbind();
 
@@ -1227,7 +1262,9 @@ public:
 		// camera rotate
 		thePartSystem->setCamera(V->topMatrix());
 
-		// Draw
+		// Draw particles
+		//enable the blending for particles
+		CHECKED_GL_CALL(glEnable(GL_BLEND));
 		partProg->bind();
 		Model->pushMatrix();
 		Model->loadIdentity();
@@ -1236,14 +1273,14 @@ public:
 		CHECKED_GL_CALL(glUniformMatrix4fv(partProg->getUniform("V"), 1, GL_FALSE, value_ptr(V->topMatrix())));
 		CHECKED_GL_CALL(glUniformMatrix4fv(partProg->getUniform("M"), 1, GL_FALSE, value_ptr(Model->topMatrix())));
 		
-		// CHECKED_GL_CALL(glUniform3f(partProg->getUniform("pColor"), 0.9, 0.7, 0.7));
+		CHECKED_GL_CALL(glUniform3f(partProg->getUniform("pColor"), 0.0, 0.5, 1.0));
 
-		setModel(partProg, Model);
+		// setModel(partProg, Model);
 		
 		thePartSystem->drawMe(partProg);
-		thePartSystem->drawMe(partProg);
-		thePartSystem->drawMe(partProg);
-		thePartSystem->update();
+		thePartSystem->update(false);
+		thePartSystem2->drawMe(partProg);
+		thePartSystem2->update(true);
 		Model->popMatrix();
 		partProg->unbind();
 

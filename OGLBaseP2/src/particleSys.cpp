@@ -77,14 +77,14 @@ void particleSys::drawMe(std::shared_ptr<Program> prog) {
 	glDisableVertexAttribArray(0);
 }
 
-void particleSys::update() {
+void particleSys::update(bool closerParticles) {
 
   vec3 pos;
   vec4 col;
 
   //update the particles
   for(auto particle : particles) {
-        particle->update(t, h, g, start);
+        particle->update(t, h, g, start, closerParticles);
   }
   // t += h;
   t += 0.03;
