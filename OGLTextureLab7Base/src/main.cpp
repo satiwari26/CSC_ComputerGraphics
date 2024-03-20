@@ -155,7 +155,6 @@ public:
 		texProg->addUniform("M");
 		texProg->addUniform("flip");
 		texProg->addUniform("Texture0");
-		texProg->addUniform("MatShine");
 		texProg->addUniform("lightPos");
 		texProg->addAttribute("vertPos");
 		texProg->addAttribute("vertNor");

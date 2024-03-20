@@ -10,3 +10,7 @@
 - free roam camera movement using W,A,S,D and cursor movement(don't require two finger scroll).
 - added the sky box in the background with the cinematic lighting.
 - light can be shifted with Q and E
+- 
+## Final update
+- added lightning, rain and ripple effect.
+- Made Hirerchical model for car, tire rotation

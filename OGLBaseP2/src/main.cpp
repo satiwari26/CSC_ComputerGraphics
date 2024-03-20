@@ -92,7 +92,7 @@ public:
 	//ground
 	shared_ptr<Shape> ground;
 	vector<tinyobj::shape_t> TOshapesGround;
-	shared_ptr<Texture> groundTexture;
+	vector<shared_ptr<Texture>> groundTextures;
 
 	//grass
 	shared_ptr<Shape> grass;
@@ -134,6 +134,9 @@ public:
 	float gTrans2 = 0;
 	float gLight = 0;
 	float gMove = 0;
+
+	//index val for the ripples
+	int indexVal = 0;
 
 	//camera
 	double g_phi, g_theta;
@@ -366,6 +369,7 @@ public:
 		texProg->addAttribute("vertPos");
 		texProg->addAttribute("vertNor");
 		texProg->addAttribute("vertTex");
+		texProg->addUniform("isGround");
 
 		//read in a load the texture
 		texture0 = make_shared<Texture>();
@@ -389,11 +393,18 @@ public:
 		skyBoxTexture2->setWrapModes(GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE);
 
 		//ground texture
-		groundTexture = make_shared<Texture>();
-		groundTexture->setFilename(resourceDirectory + "/boundingBox2.jpg");
-		groundTexture->init();
-		groundTexture->setUnit(0);
-		groundTexture->setWrapModes(GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE);
+		for(int i=0;i<30;i++){
+			groundTextures.push_back(make_shared<Texture>());
+			groundTextures[i]->setFilename(resourceDirectory + "/ripples/ripples_" + std::to_string(i) + ".png");
+			groundTextures[i]->init();
+			groundTextures[i]->setUnit(0);
+			groundTextures[i]->setWrapModes(GL_REPEAT, GL_REPEAT);
+		}
+		// groundTexture = make_shared<Texture>();
+		// groundTexture->setFilename(resourceDirectory + "/roadtexture.png");
+		// groundTexture->init();
+		// groundTexture->setUnit(0);
+		// groundTexture->setWrapModes(GL_REPEAT, GL_REPEAT);
 
 		float bx = 7.0;
 		float by = 6.2;
@@ -760,8 +771,8 @@ public:
 			else{
 				SetView(prog);
 			}
-		glUniform3f(prog->getUniform("lightPos"), 7.0 + gLight, 5.0, -1.5);
-		glUniform1f(prog->getUniform("lightIntensity"), 1.3);
+		glUniform3f(prog->getUniform("lightPos"), 7.0 + gLight, 15.0, -1.5);
+		glUniform1f(prog->getUniform("lightIntensity"), 1.5);
 		glUniform3f(prog->getUniform("lightPos2"), 50.0, 10.0, -2);
 
 		//for lightning effect
@@ -769,7 +780,7 @@ public:
 			lightCounter = 14;
 		}
 		if(lightCounter > 0){
-			glUniform1f(prog->getUniform("lightIntensity2"), 2.3);
+			glUniform1f(prog->getUniform("lightIntensity2"), 2.4);
 			lightCounter--;
 		}
 		else{
@@ -782,9 +793,25 @@ public:
 		//car
 		for(int i=0; i<cars.size();i++) {
 			Model->pushMatrix();
-				Model->translate(vec3(15, -1, -5));
+				Model->translate(vec3(15, -1.1, -5));
 				Model->scale(vec3(0.35, 0.35, 0.35));
 				Model->rotate((0.7), vec3(0, 1, 0));
+
+				// float swing = 0.1f * sin(glfwGetTime());
+				// Model->rotate(swing, vec3(0, 1, 0));
+
+				if(i > 6 && i < 11){
+					float avgX = (cars[i]->min.x + cars[i]->max.x) / 2.0f;
+					float avgY = (cars[i]->min.y + cars[i]->max.y) / 2.0f;
+					float avgZ = (cars[i]->min.z + cars[i]->max.z) / 2.0f;
+					Model->translate(vec3(avgX, avgY, avgZ));
+					//rotate front tire slightly left
+					if(i == 7 || i == 8){
+						Model->rotate((0.4), vec3(0, 1, 0));
+					}
+					Model->rotate(glfwGetTime(),vec3(1, 0, 0));
+					Model->translate(vec3(-avgX, -avgY, -avgZ));
+				}
 				SetMaterial(prog, 2);
 				setModel(prog, Model);
 				cars[i]->draw(prog);
@@ -921,6 +948,8 @@ public:
 		// Draw the skybox
 		texProg->bind();
 		glUniformMatrix4fv(texProg->getUniform("P"), 1, GL_FALSE, value_ptr(Projection->topMatrix()));
+		//setting the texture to 0
+		glUniform1i(texProg->getUniform("isGround"), 0);
 		if(!goCamera){
 			// glUniformMatrix4fv(texProg->getUniform("V"), 1, GL_FALSE, value_ptr(View->topMatrix()));
 			SetView2(texProg);
@@ -941,21 +970,30 @@ public:
 					skyBoxTexture->bind(texProg->getUniform("Texture0"));
 				}
 				setModel(texProg, Model);
+				glDisable(GL_BLEND);
 				cubes[i]->draw(texProg);
 			Model->popMatrix();
 		}
 
 			//ground
 			//disable the blending for non particles
-			CHECKED_GL_CALL(glDisable(GL_BLEND));
-			// Model->pushMatrix();
-			// 	Model->loadIdentity();
-			// 	Model->translate(vec3(0, 0, 0));
-			// 	Model->scale(vec3(50, 0.1, 50));
-			// 	groundTexture->bind(texProg->getUniform("Texture0"));
-			// 	setModel(texProg, Model);
-			// 	ground->draw(texProg);
-			// Model->popMatrix();
+			CHECKED_GL_CALL(glEnable(GL_BLEND));
+			if(indexVal == 30){
+				indexVal = 0;
+			}
+			Model->pushMatrix();
+				Model->loadIdentity();
+				Model->translate(vec3(0, -0.9, 0));
+				Model->scale(vec3(50, 0.01, 70));
+				groundTextures[indexVal]->bind(texProg->getUniform("Texture0"));
+				setModel(texProg, Model);
+				//set the isGround to 1 to perform the ground texture
+				glUniform1i(texProg->getUniform("isGround"), 1);
+
+				ground->draw(texProg);
+			Model->popMatrix();
+
+			indexVal++;
 
 		texProg->unbind();
 
@@ -979,7 +1017,7 @@ public:
 					Model->rotate((3.14), vec3(0, 0, 1));
 					Model->rotate((3.14/2), vec3(-1, 0, 0));
 					Model->rotate((3.14), vec3(0, 1, 0));
-					Model->translate(vec3(7.4, 0.4, -0.83));
+					Model->translate(vec3(7.4, 0.45, -0.83));
 					Model->scale(vec3(0.7, 2.7, 0.1));
 					Model->rotate((3.14/8), vec3(0, 0, 1));
 					Model->rotate((3.14/2), vec3(-1, 0, 0));
@@ -992,7 +1030,7 @@ public:
 				Model->popMatrix();
 			}
 			Model->pushMatrix();
-				Model->translate(vec3(6.2, -1.0, -5.7));
+				Model->translate(vec3(6.2, -0.9, -5.7));
 				Model->scale(vec3(0.0065, 0.001, 0.027));
 				setModel(solidColorProg, Model);
 				bricks[0]->draw(solidColorProg);
@@ -1002,9 +1040,11 @@ public:
 			//car shadow on lightining
 			for(int i=0; i<cars.size();i++) {
 				Model->pushMatrix();
-					Model->translate(vec3(16.8, -1, -1.6));
+					Model->translate(vec3(16.8, -0.9, -1.6));
 					Model->scale(vec3(0.55, 0.01, 0.65));
 					Model->rotate((0.8), vec3(0, 1, 0));
+					// float swing = 0.1f * sin(glfwGetTime());
+					// Model->rotate(swing, vec3(0, 1, 0));
 					setModel(solidColorProg, Model);
 					cars[i]->draw(solidColorProg);
 				Model->popMatrix();
@@ -1012,7 +1052,7 @@ public:
 
 			//other bricks shadow:
 			Model->pushMatrix();
-				Model->translate(vec3(13, -1.0, 3.3));
+				Model->translate(vec3(13, -0.9, 3.3));
 				Model->scale(vec3(0.005, 0.001, 0.015));
 				setModel(solidColorProg, Model);
 				bricks[0]->draw(solidColorProg);
@@ -1020,7 +1060,7 @@ public:
 
 			// bricks
 			Model->pushMatrix();
-				Model->translate(vec3(7, -0.8, 5));
+				Model->translate(vec3(7, -0.7, 5));
 				Model->scale(vec3(0.005, 0.005, 0.005));
 				Model->rotate(0.5*(3.14), vec3(0, 1, 0));
 				setModel(solidColorProg, Model);
@@ -1028,7 +1068,7 @@ public:
 			Model->popMatrix();
 
 			Model->pushMatrix();
-				Model->translate(vec3(7.3, -0.7, 4));
+				Model->translate(vec3(7.3, -0.6, 4));
 				Model->scale(vec3(0.005, 0.005, 0.005));
 				// Model->rotate(0.5*(3.14), vec3(0, 1, 0));
 				Model->rotate(0.25*(3.14), vec3(0, 0, 1));
@@ -1038,7 +1078,7 @@ public:
 
 			//other bricks
 			Model->pushMatrix();
-				Model->translate(vec3(16.5, -0.97, 11));
+				Model->translate(vec3(16.5, -0.8, 11));
 				Model->scale(vec3(0.005, 0.0001, 0.024));
 				Model->rotate(0.5*(3.14), vec3(0, 0, -1));
 				Model->rotate(0.5*(3.14), vec3(-1, 0, 0));
@@ -1048,7 +1088,7 @@ public:
 
 			//bricks
 			Model->pushMatrix();
-				Model->translate(vec3(14.3, -0.97, 4.5));
+				Model->translate(vec3(14.3, -0.8, 4.5));
 				Model->scale(vec3(0.01, 0.0001, 0.013));
 				Model->rotate(0.25*(3.14), vec3(0, 1, 0));
 				setModel(solidColorProg, Model);

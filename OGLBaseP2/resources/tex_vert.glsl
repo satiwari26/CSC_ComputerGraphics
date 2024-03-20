@@ -6,11 +6,13 @@ uniform mat4 P;
 uniform mat4 M;
 uniform mat4 V;
 uniform vec3 lightPos;
+uniform int isGround;
 
 out vec3 fragNor;
 out vec3 lightDir;
 out vec3 EPos;
 out vec2 vTexCoord;
+flat out int isGroundFrag;
 
 void main() {
 
@@ -19,9 +21,10 @@ void main() {
   gl_Position = P * V *M * vec4(vertPos.xyz, 1.0);
 
   fragNor = (V*M * vec4(vertNor, 0.0)).xyz;
-  lightDir = (V*(vec4(lightPos - wPos, 0.0))).xyz;
+  lightDir = (V * vec4(0, -1, 1, 0.0)).xyz;
   EPos = (V * vec4(wPos, 1.0)).xyz;
   
   /* pass through the texture coordinates to be interpolated */
-  vTexCoord = vertTex;
+  vTexCoord = vertTex * (isGround == 1 ? 100 : 1);
+  isGroundFrag = isGround;
 }
