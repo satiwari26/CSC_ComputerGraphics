@@ -1,0 +1,358 @@
+@-ms-viewport{ width: device-width; }
+
+
+.container{
+    display: grid;
+    height: 100vh;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 0.04fr 0.3fr 0.04fr 0.5fr 0.04fr 0.5fr 0.5fr 0.5fr 0.04fr 0.5fr 0.04fr 0.5fr;
+    grid-template-areas: 
+        "ruler ruler"
+        "intro discription"
+        "ruler2 ruler2"
+        "education education"
+        "ruler3 ruler3"
+        "btc_part videoLink"
+        "FLC FLC"
+        "Phy logo"
+        "ruler4 ruler4"
+        "contact contact"
+        "logoDes logoDes"
+        "ruler5 ruler5";
+}
+
+*{
+    margin:0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+#canvas1 {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    background-image: url('bat1.png');
+}
+body
+{
+    background: rgb(0,26,31);
+    background: radial-gradient(circle, rgba(0,26,31,1) 14%, rgba(132,181,169,1) 100%);
+}
+
+img.layer{
+    width: 80%;
+    height: 80%;
+}
+
+section {
+   position: relative;
+    width:100%;
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /*background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    background-image: url('space1.png');*/
+}
+
+
+/*section img
+{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}*/
+
+
+
+
+#ruler{
+    grid-area: ruler;
+}
+
+hr{
+    color: aliceblue;
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-top: 2%;
+}
+
+#intro{
+    grid-area: intro;
+    display: flex;
+    flex-wrap: wrap;
+    
+}
+
+.naming{
+    padding-top: 4%;
+    margin-left: auto;
+    overflow: hidden;
+}
+.name_desc{
+    font-size: 2em;
+    color: #ffffff;
+    font-family: sans-serif;
+    font-weight: bold;
+}
+.fallImg{
+    height: 77%;
+    width: 100%;
+    border-radius: 16px;
+}
+
+
+#discription{
+    grid-area: discription;
+    display: flex;
+    flex-wrap: wrap;
+}
+.disc_margin{
+    padding-top: 6%;
+    margin-right: 20%;
+    margin-left: 5%;
+}
+.disc_margin h4{
+    color:#ffffff;
+    font-family: sans-serif;
+}
+
+#ruler2{
+    grid-area: ruler2;
+}
+
+#education{
+    grid-area: education;
+    display: flex;
+    flex-wrap: wrap;
+}
+.eduFormat{
+    color: #ffffff;
+    padding-top: 1%;
+    padding-left: 13%;
+    padding-right: 10%;
+    font-family: sans-serif;
+}
+
+#ruler3{
+    grid-area: ruler3;
+}
+
+#btc_part{
+    grid-area: btc_part;
+    display: flex;
+    flex-wrap: wrap;
+}
+.btc{
+    font-family: sans-serif;
+    color: #ffffff;
+
+    padding-top: 5%;
+    padding-left: 25%;
+    padding-right: 5%;
+    padding-bottom: 5%;
+}
+
+#videoLink{
+    grid-area: videoLink;
+    display: flex;
+    flex-wrap: wrap;
+    object-fit: contain;
+}
+
+.iframeC{
+    margin: auto;
+    width: 70%;
+}
+.iframeC iframe{
+    height: 90%;
+    width: 100%;
+    filter: drop-shadow(17px 30px 15px);
+    padding-bottom: 10%;
+}
+
+#FLC{
+    grid-area: FLC;
+    display: flex;
+    flex-wrap: wrap;
+}
+.flcMember{
+    color: #ffffff;
+    padding-top: 1%;
+    padding-left: 13%;
+    padding-right: 10%;
+    font-family: sans-serif;
+    padding-bottom: 1%;
+}
+
+#Phy{
+    grid-area: Phy;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.Phyun{
+    font-family: sans-serif;
+    color: #ffffff;
+    padding-top: 5%;
+    padding-left: 25%;
+    padding-right: 5%;
+    padding-bottom: 5%;
+}
+
+#logo{
+    grid-area: logo;
+    display: flex;
+    flex-wrap: wrap;
+}
+.logoCnt{
+    margin: auto;
+}
+.logoCnt img{
+    border-radius: 16px;
+    height: 85%;
+    width: 100%;
+    filter: drop-shadow(17px 30px 15px);
+}
+
+#ruler4{
+    grid-area: ruler4;
+}
+
+#contact{
+    grid-area: contact;
+    display: flex;
+    flex-wrap: wrap;
+}
+.contactInfo{
+    color: #ffffff;
+    padding-top: 1%;
+    padding-left: 13%;
+    padding-right: 10%;
+    font-family: sans-serif;
+    padding-bottom: 1%;
+}
+
+#logoDes{
+    grid-area: logoDes;
+    display: flex;
+    flex-wrap: wrap;
+}
+.logoPlacement {
+    float: left;
+    width: 33.33%;
+    padding-left: 10%;
+}
+
+#ruler5{
+    grid-area: ruler5;
+}
+span{
+    color: #ffffff;
+    padding-top: 2%;
+    padding-left: 13%;
+    padding-right: 10%;
+    font-family: sans-serif;
+    padding-bottom: 1%;
+    font-size: 1em;
+}
+.f{
+    color:#ffffff;
+}
+
+@media only screen and (max-width: 850px)
+{
+    .container{
+        grid-template-columns: 1fr;
+        grid-template-rows: 0.02fr 0.4fr 0.4fr 0.02fr 0.4fr 0.02fr 0.4fr 0.4fr 0.4fr 0.4fr 0.4fr 0.02fr 0.4fr 0.4fr 0.02fr;
+        grid-template-areas: 
+            "ruler"
+            "intro"
+            "discription"
+            "ruler2"
+            "education"
+            "ruler3"
+            "btc_part"
+            "videoLink"
+            "FLC"
+            "Phy"
+            "logo"
+            "ruler4"
+            "contact"
+            "logoDes"
+            "ruler5";
+    }
+    
+    .naming{
+    padding-top: 4%;
+    margin: auto;
+    overflow: hidden;
+    font-size: 70%;
+    }
+    
+    .disc_margin{
+    padding-top: 10%;
+    margin-right: 20%;
+    margin-left: 20%;
+    padding-bottom: 5%;
+    font-size: 70%;
+    }
+    
+    
+    .eduFormat{
+        margin: auto;
+        font-size: 70%;
+    }
+    .btc{
+        margin: auto;
+    padding-top: 1%;
+    padding-left: 13%;
+    padding-right: 10%;
+    font-size: 70%;
+    }
+    .Phyun{
+        margin: auto;
+        padding-left: 10%;
+        font-size: 70%;
+    }
+    .contactInfo{
+        font-size: 70%;
+    }
+    .flcMember{
+        margin: auto;
+        font-size: 70%;
+    }
+    .logoCnt img{
+        height: 60%;
+        width: 100%;
+        margin: auto;
+    }
+    .fallImg{
+        height: 60%;
+        width: 100%;
+    }
+    
+    section  h1{
+        font-size: 8em;
+    }
+    iframe{
+        height: 50%;
+        width: 100;
+    }
+}
