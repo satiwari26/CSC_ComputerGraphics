@@ -1,4 +1,5 @@
 ## video link
+- click on the image below to play the video.
 [![Scene Video Link](https://github.com/satiwari26/CSC_ComputerGraphics/blob/main/staticWebpage/bat1.png)](https://youtu.be/wl4uQn8vGVE)
 
 ## Scene Explanation
